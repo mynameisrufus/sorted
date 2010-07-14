@@ -24,6 +24,9 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/sorted.rb",
+     "lib/sorted/action_view.rb",
+     "lib/sorted/active_record.rb",
+     "lib/sorted/railtie.rb",
      "sorted.gemspec",
      "spec/sorted_spec.rb",
      "spec/spec_helper.rb"

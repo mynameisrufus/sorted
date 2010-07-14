@@ -1,7 +1,5 @@
 # sorted
 
-currently not working!
-
 This wee gem lets you sort tables (or somthing else) using a view helper and a custom scope.
 
 It will toggle your sort order for you and will even work across pages with `will_paginate`

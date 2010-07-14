@@ -9,7 +9,7 @@ module Sorted
     
     initializer "sorted.action_view" do |app|
       require 'sorted/action_view'
-      ActionView::Base.send(:include, Sorted::ActionView)
+      ::ActionView::Base.send(:include, Sorted::ActionView)
     end
   end
 end
