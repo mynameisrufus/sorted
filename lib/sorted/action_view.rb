@@ -43,7 +43,7 @@ module Sorted
     end
 
     def sorted_to_string
-      @sort_order[:order].map do |order|
+      @sorted_params[:order].map do |order|
         order.join('_')
       end.join('|')
     end

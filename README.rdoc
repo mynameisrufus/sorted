@@ -1,0 +1,23 @@
+= sorted
+
+This wee gem lets you sort tables (or somthing else) using a view helper and a scope.
+
+It will toggle your sort order for you and will even work across pages with {will_paginate}[http://github.com/mislav/will_paginate]
+
+== Example
+
+in the view:
+
+  link_to_sorted "Email", :email
+
+in the model
+
+  @users = User.sorted(params[:order]).paginate(:page => params[:page])
+
+This will make a url like this
+
+  http://myapp/users?order=email_asc
+
+Or ....
+
+  http://myapp/users?order=email_asc|name_desc
