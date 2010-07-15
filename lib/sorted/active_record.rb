@@ -7,7 +7,7 @@ module Sorted
         scope :sorted, lambda{|params|
           return if params.nil?
           order = []
-          params.split(/\|/).each do |param|
+          params.split(/!/).each do |param|
             order << param.gsub(/_asc/, ' ASC').gsub(/_desc/, ' DESC')
           end
           {:order => order.join(', ')}

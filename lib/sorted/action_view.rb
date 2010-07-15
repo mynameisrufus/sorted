@@ -29,7 +29,7 @@ module Sorted
     def sorted_order(sort_string, attribute, order_rest = {})
       order_first = {attribute => 'asc'}
       if sort_string.class == String
-        sort_string.split(/\|/).each do |order|
+        sort_string.split(/!/).each do |order|
           order.match(/(\w+)_(asc|desc)/) do |match_data|
             if match_data[1] == attribute.to_s
               order_first = {attribute => sorted_sql_reverse(match_data[2])}
@@ -45,7 +45,7 @@ module Sorted
     def sorted_to_string
       @sorted_params[:order].map do |order|
         order.join('_')
-      end.join('|')
+      end.join('!')
     end
 
     def sorted_sql_reverse(order)

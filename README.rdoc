@@ -6,11 +6,11 @@ It will toggle your sort order for you and will even work across pages with {wil
 
 == Example
 
-in the view:
+The view:
 
   link_to_sorted "Email", :email
 
-in the model
+The model
 
   @users = User.sorted(params[:order]).paginate(:page => params[:page])
 
