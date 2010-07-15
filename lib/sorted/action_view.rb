@@ -3,7 +3,7 @@ require 'action_view'
 module Sorted
   module ActionView
     def sorted_hash(attribute, order_rest = {})
-      request.get? ? get_params = params : return
+      request.get? ? get_params = params.dup : return
       order_first = {attribute => 'asc'}
       if get_params[:order].present?
         get_params[:order].split(/,/).each do |param|
@@ -22,6 +22,7 @@ module Sorted
 
     def link_to_sorted(name, attribute, options = nil)
       url_hash = sorted_hash(attribute)
+      url_hash[:order] = url_hash[:order].map{|o|o.join('_')}.join(',')
       link_to(name, url_hash, {:class => url_hash[:order].first[1]})
     end
 
