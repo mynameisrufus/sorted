@@ -34,21 +34,25 @@ describe Sorted::ActionView do
   end
   
   it "should integrate with ActionView::Base" do
-    ActionView::Base.new.should respond_to(:sorted_hash)
+    ActionView::Base.new.should respond_to(:sorted_params)
   end
 
   it "should return a hash for url" do
     @controller.params = {:order => "name_desc"}
-    ActionView::Base.new([], {}, @controller).sorted_hash(:email).should == {:order => {:email => "asc", :name => "desc"}}
+    ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "asc", :name => "desc"}}
   end
 
   it "should return a hash for url" do
-    @controller.params = {:order => "email_asc,name_desc"}
-    ActionView::Base.new([], {}, @controller).sorted_hash(:email).should == {:order => {:email => "desc", :name => "desc"}}
+    @controller.params = {:order => "email_asc|name_desc"}
+    ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "desc", :name => "desc"}}
   end
 
   it "should return a query string for link options" do
-    @controller.params = {:order => "email_asc,name_desc", :page => 2}
-    ActionView::Base.new([], {}, @controller).sorted_hash(:email).should == {:order => {:email => "desc", :name => "desc"}, :page => 2}
+    @controller.params = {:order => "email_asc|name_desc", :page => 2}
+    ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "desc", :name => "desc"}, :page => 2}
+  end
+
+  it "should not care if params[:order] nil" do
+    ActionView::Base.new([], {}, @controller).sorted_params({:email => "desc", :name => "desc"}).should_not be_nil
   end
 end

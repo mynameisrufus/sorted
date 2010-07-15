@@ -2,37 +2,53 @@ require 'action_view'
 
 module Sorted
   module ActionView
-    def sorted_hash(attribute, order_rest = {})
-      request.get? ? get_params = params.dup : return
-      order_first = {attribute => 'asc'}
-      if get_params[:order].present?
-        get_params[:order].split(/,/).each do |param|
-          param.match(/(\w+)_(asc|desc)/) do |match_data|
-            if match_data[1] == attribute.to_s
-              order_first = {attribute => sql_reverse_for_sorted(match_data[2])}
-            else
-              order_rest = order_rest.merge( {match_data[1] => match_data[2]} )
-            end
-          end
-        end
-      end
-      get_params[:order] = order_first.merge(order_rest).symbolize_keys
+    def sorted_params(attribute)
+      get_params = request.get? ? params.dup : {:order => nil}
+      get_params[:order] = sorted_order(get_params[:order], attribute)
       get_params
     end
 
     def link_to_sorted(name, attribute, options = nil)
-      url_hash = sorted_hash(attribute)
-      url_hash[:order] = url_hash[:order].map{|o|o.join('_')}.join(',')
-      link_to(name, url_hash, {:class => url_hash[:order].first[1]})
+      @sorted_params = sorted_params(attribute)
+      if options.nil?
+        options = {:class => sorted_css_class}
+      elsif options[:class].nil?
+        options.merge(:class => sorted_css_class)
+      else
+        options[:class] = "#{options[:class]} #{sorted_css_class}"
+      end
+      link_to(name, @sorted_params.merge(:order => sorted_to_string), options)
     end
 
-    def sorted_to_s(url_hash)
-      url_hash.map do |h|
-        h.first.join('_')
-      end.join(',')
+    protected
+
+    def sorted_css_class
+      "sorted-#{@sorted_params[:order].first[1]}"
     end
-    
-    def sql_reverse_for_sorted(order)
+
+    def sorted_order(sort_string, attribute, order_rest = {})
+      order_first = {attribute => 'asc'}
+      if sort_string.class == String
+        sort_string.split(/\|/).each do |order|
+          order.match(/(\w+)_(asc|desc)/) do |match_data|
+            if match_data[1] == attribute.to_s
+              order_first = {attribute => sorted_sql_reverse(match_data[2])}
+            else
+              order_rest = order_rest.merge(match_data[1] => match_data[2])
+            end
+          end
+        end
+      end
+      order_first.merge(order_rest).symbolize_keys
+    end
+
+    def sorted_to_string(order_hash)
+      @sort_order[:order].map do |order|
+        order.join('_')
+      end.join('|')
+    end
+
+    def sorted_sql_reverse(order)
       case order
       when 'asc'
         'desc'
