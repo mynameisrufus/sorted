@@ -42,7 +42,7 @@ module Sorted
       order_first.merge(order_rest).symbolize_keys
     end
 
-    def sorted_to_string(order_hash)
+    def sorted_to_string
       @sort_order[:order].map do |order|
         order.join('_')
       end.join('|')
