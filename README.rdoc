@@ -10,14 +10,14 @@ The view:
 
   link_to_sorted "Email", :email
 
-The model
+The model:
 
   @users = User.sorted(params[:order]).paginate(:page => params[:page])
 
-This will make a url like this
+This will make a url like this:
 
   http://myapp/users?order=email_asc
 
-Or ....
+Or this when you then sort by somthing else....
 
-  http://myapp/users?order=email_asc|name_desc
+  http://myapp/users?order=name_asc|email_desc
