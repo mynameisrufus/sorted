@@ -43,12 +43,12 @@ describe Sorted::ActionView do
   end
 
   it "should return a hash for url" do
-    @controller.params = {:order => "email_asc|name_desc"}
+    @controller.params = {:order => "email_asc!name_desc"}
     ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "desc", :name => "desc"}}
   end
 
   it "should return a query string for link options" do
-    @controller.params = {:order => "email_asc|name_desc", :page => 2}
+    @controller.params = {:order => "email_asc!name_desc", :page => 2}
     ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "desc", :name => "desc"}, :page => 2}
   end
 
