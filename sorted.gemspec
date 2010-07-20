@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sorted}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rufus Post"]
-  s.date = %q{2010-07-19}
+  s.date = %q{2010-07-20}
   s.description = %q{lets you sort tables (or somthing else) using a view helper and a custom scope}
   s.email = %q{rufuspost@gmail.com}
   s.extra_rdoc_files = [
@@ -46,11 +46,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<activerecord>, [">= 3.0.0"])
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
     else
+      s.add_dependency(%q<activerecord>, [">= 3.0.0"])
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
     end
   else
+    s.add_dependency(%q<activerecord>, [">= 3.0.0"])
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
   end
 end
