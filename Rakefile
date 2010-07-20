@@ -10,8 +10,8 @@ begin
     gem.email = "rufuspost@gmail.com"
     gem.homepage = "http://github.com/mynameisrufus/sorted"
     gem.authors = ["Rufus Post"]
+    gem.add_dependency "activerecord", ">= 3.0.0"
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

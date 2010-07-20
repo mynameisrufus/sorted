@@ -4,6 +4,10 @@ This wee gem lets you sort tables (or somthing else) using a view helper and a s
 
 It will toggle your sort order for you and will even work across pages with {will_paginate}[http://github.com/mislav/will_paginate]
 
+== Requirements
+
+activerecord >= 3.0.0
+
 == Example
 
 The view:
@@ -20,4 +24,4 @@ This will make a url like this:
 
 Or this when you then sort by somthing else....
 
-  http://myapp/users?order=name_asc|email_desc
+  http://myapp/users?order=name_asc!email_desc
