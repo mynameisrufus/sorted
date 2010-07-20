@@ -11,7 +11,7 @@ begin
     gem.homepage = "http://github.com/mynameisrufus/sorted"
     gem.authors = ["Rufus Post"]
     gem.add_dependency "activerecord", ">= 3.0.0"
-    gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_development_dependency "rspec", ">= 2.0.0"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

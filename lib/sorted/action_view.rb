@@ -2,60 +2,82 @@ require 'action_view'
 
 module Sorted
   module ActionView
-    def sorted_params(attribute)
-      get_params = request.get? ? params.dup : {:order => nil}
-      get_params[:order] = sorted_order(get_params[:order], attribute)
-      get_params
+    def sorted(attribute)
+      Sorter.new(attribute, (request.get? && !params.nil? ? params.dup : nil))
     end
 
-    def link_to_sorted(name, attribute, options = nil)
-      @sorted_params = sorted_params(attribute)
-      if options.nil?
-        options = {:class => sorted_css_class}
-      elsif options[:class].nil?
-        options.merge(:class => sorted_css_class)
-      else
+    def link_to_sorted(name, attribute, options = {})
+      sorted_object = sorted(name)
+      unless options[:class].nil?
         options[:class] = "#{options[:class]} #{sorted_css_class}"
+      else
+        options.merge(:class => sorted_css_class)
       end
-      link_to(name, @sorted_params.merge(:order => sorted_to_string), options)
+      link_to(name, sorted_object.params, options)
     end
+    
+    class Sorter
+      def initialize(*args)
+        raise "#{self.class} needs an attribute to sort with" if args[0].nil?
+        @attribute = args[0].to_s
+        @params    = args[1]
+        unless @params.nil? || @params[:order].nil?
+          @order = @params[:order]
+        end
+        to_hash
+      end
 
-    protected
+      def params
+        @params.nil? ? Hash[:order, to_s] : @params.merge(:order => to_s)
+      end
 
-    def sorted_css_class
-      "sorted-#{@sorted_params[:order].first[1]}"
-    end
+      def current_order
+        @current_order ||= "asc"
+      end
+       
+      def to_hash
+        @re_ordered ||= re_order
+      end
 
-    def sorted_order(sort_string, attribute, order_rest = {})
-      order_first = {attribute => 'asc'}
-      if sort_string.class == String
-        sort_string.split(/!/).each do |order|
-          order.match(/(\w+)_(asc|desc)/) do |match_data|
-            if match_data[1] == attribute.to_s
-              order_first = {attribute => sorted_sql_reverse(match_data[2])}
-            else
-              order_rest = order_rest.merge(match_data[1] => match_data[2])
+      def other_attributes
+        @other ||= {}
+      end
+
+      def to_s
+        to_hash.map{ |attribute| attribute.join('_') }.join('!')
+      end
+
+      def css_class
+        "sorted-#{current_order}"
+      end
+      
+      private
+      def re_order
+        unless @order.nil?
+          @order.split(/!/).each do |o|
+            o.match(/(\w+)_(asc|desc)/) do |m|
+              unless m[1].nil? || m[2].nil?
+                if m[1] == @attribute
+                  @current_order = direction_reverse(m[2])
+                else
+                  @other = other_attributes.merge(m[1] => m[2])
+                end
+              end
             end
           end
         end
+        Hash[@attribute, current_order].merge(other_attributes).symbolize_keys
       end
-      order_first.merge(order_rest).symbolize_keys
-    end
 
-    def sorted_to_string
-      @sorted_params[:order].map do |order|
-        order.join('_')
-      end.join('!')
-    end
-
-    def sorted_sql_reverse(order)
-      case order
-      when 'asc'
-        'desc'
-      when 'desc'
-        'asc'
-      else
-        'asc'
+      def direction_reverse(direction)
+        case direction
+        when "asc"
+          "desc"
+        when "desc"
+          "asc"
+        else
+          "asc"
+        end
       end
     end
   end

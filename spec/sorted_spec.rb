@@ -34,25 +34,33 @@ describe Sorted::ActionView do
   end
   
   it "should integrate with ActionView::Base" do
-    ActionView::Base.new.should respond_to(:sorted_params)
+    ActionView::Base.new.should respond_to(:sorted)
   end
 
-  it "should return a hash for url" do
+  it "should not change the direction of name" do
     @controller.params = {:order => "name_desc"}
-    ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "asc", :name => "desc"}}
+    ActionView::Base.new([], {}, @controller).sorted(:email).to_hash.should == {:email => "asc", :name => "desc"}
   end
 
-  it "should return a hash for url" do
+  it "should reverse email direction" do
     @controller.params = {:order => "email_asc!name_desc"}
-    ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "desc", :name => "desc"}}
+    ActionView::Base.new([], {}, @controller).sorted(:email).to_hash.should == {:email => "desc", :name => "desc"}
   end
 
-  it "should return a query string for link options" do
+  it "should return a hash of options for url builder with sorted query string" do
     @controller.params = {:order => "email_asc!name_desc", :page => 2}
-    ActionView::Base.new([], {}, @controller).sorted_params(:email).should == {:order => {:email => "desc", :name => "desc"}, :page => 2}
+    ActionView::Base.new([], {}, @controller).sorted(:email).params.should == {:order => "email_desc!name_desc", :page => 2}
   end
 
-  it "should not care if params[:order] nil" do
-    ActionView::Base.new([], {}, @controller).sorted_params({:email => "desc", :name => "desc"}).should_not be_nil
+  it "should not die if params nil" do
+    sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
+    sorter.params.should == {:order => "email_asc"}
+  end
+
+  it "should have some roll your own methods" do
+    sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
+    sorter.other_attributes.should == {}
+    sorter.to_s.should             == "email_asc"
+    sorter.current_order.should    == "asc"
   end
 end
