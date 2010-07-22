@@ -16,18 +16,18 @@ activerecord >= 3.0.0
 
 This will make a url like this:
 
-  http://myapp/users?order=email_asc
+  http://myapp/users?sort=email_asc
 
 Or on the next page load when you then sort by something else....
 
-  http://myapp/users?order=name_asc!email_asc
+  http://myapp/users?sort=name_asc!email_asc
 
 === The model:
 
 This will initially sort by email ascending:
 
-  @users = User.sorted(:email, params[:order]).paginate(:page => params[:page])
+  @users = User.sorted(:email, params[:sort]).paginate(:page => params[:page])
 
 This will initially sort by email descending:
 
-  @users = User.sorted('email DESC', params[:order]).paginate(:page => params[:page])
+  @users = User.sorted('email DESC', params[:sort]).paginate(:page => params[:page])

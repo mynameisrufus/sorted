@@ -22,6 +22,18 @@ module Sorted
       end
     end
     
+    def parse_query(sort)
+      sort.match(/(\w+)_(asc|desc)/) do |m|
+        Hash[m[1],m[2]]
+      end
+    end
+
+    def parse_sql(sql)
+      sql.match(/(([a-zA-Z._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._]+)/) do |m|
+        Hash[(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
+      end
+    end
+
     def toggle
       @_hash = {}
       order_queue.each do |os|
@@ -42,28 +54,6 @@ module Sorted
       self
     end
 
-    def default
-      _default = sort_queue
-      order_queue.each do |o|
-        unless _default.key?(o[0])
-          _default = _default.merge(o[0] => o[1])
-        end
-      end
-      _default
-    end
-
-    def parse_query(sort)
-      sort.match(/(\w+)_(asc|desc)/) do |m|
-        Hash[m[1],m[2]]
-      end
-    end
-
-    def parse_sql(sql)
-      sql.match(/(([a-zA-Z._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._]+)/) do |m|
-        Hash[(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
-      end
-    end
-    
     def to_hash
       _hash
     end
@@ -94,6 +84,16 @@ module Sorted
     end
     
     private
+    def default
+      _default = sort_queue
+      order_queue.each do |o|
+        unless _default.key?(o[0])
+          _default = _default.merge(o[0] => o[1])
+        end
+      end
+      _default
+    end
+    
     def _hash
       @_hash ||= default
     end
