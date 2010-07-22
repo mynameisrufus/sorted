@@ -1,8 +1,8 @@
 = sorted
 
-This wee gem lets you sort tables (or somthing else) using a view helper and a scope.
+Sorted is a simple library that lets you sort things using ActiveRecord and create sort links using ActionView templates
 
-It will toggle your sort order for you and will even work across pages with {will_paginate}[http://github.com/mislav/will_paginate]
+It will toggle your sort order for you and is ideal for working with large datasets with {will_paginate}[http://github.com/mislav/will_paginate]
 
 == Requirements
 
@@ -10,18 +10,24 @@ activerecord >= 3.0.0
 
 == Example
 
-The view:
+=== The view:
 
   link_to_sorted "Email", :email
-
-The model:
-
-  @users = User.sorted(params[:order]).paginate(:page => params[:page])
 
 This will make a url like this:
 
   http://myapp/users?order=email_asc
 
-Or this when you then sort by somthing else....
+Or on the next page load when you then sort by something else....
 
-  http://myapp/users?order=name_asc!email_desc
+  http://myapp/users?order=name_asc!email_asc
+
+=== The model:
+
+This will initially sort by email ascending:
+
+  @users = User.sorted(:email, params[:order]).paginate(:page => params[:page])
+
+This will initially sort by email descending:
+
+  @users = User.sorted('email DESC', params[:order]).paginate(:page => params[:page])
