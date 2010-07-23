@@ -70,6 +70,26 @@ describe Sorted::ActionView do
     sorter.toggle.to_hash.should == {"email" => "desc", "name" => "desc"}
   end
 
+  it "should reverse email direction using view helper" do
+    @controller.params = {:sort => "phone_desc!name_desc!email_desc"}
+    sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
+    sorter.toggle.params.should == {:sort => "email_asc!phone_desc!name_desc"}
+    @controller.params = sorter.params
+    sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
+    sorter.toggle.params.should == {:sort => "email_desc!phone_desc!name_desc"}
+    @controller.params = sorter.params
+    sorter = ActionView::Base.new([], {}, @controller).sorted(:phone)
+    sorter.toggle.params.should == {:sort => "phone_asc!email_desc!name_desc"}
+    sorter = ActionView::Base.new([], {}, @controller).sorted(:name)
+    sorter.toggle.params.should == {:sort => "name_asc!email_desc!phone_desc"}
+  end
+
+  it "should not fail this test" do
+    sorter = Sorted::Sorter.new(:jsci_complete, {:sort => "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"})
+    sorter.toggle
+    sorter.to_s.should == "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"
+  end
+
   it "should return a hash of options for url builder with sorted query string" do
     @controller.params = {:sort => "email_asc!name_desc", :page => 2}
     ActionView::Base.new([], {}, @controller).sorted(:email).params.should == {:sort => "email_desc!name_desc", :page => 2}

@@ -59,6 +59,11 @@ module Sorted
       self
     end
 
+    def un_toggle
+      @_hash = default
+      self
+    end
+
     def to_hash
       _hash
     end
