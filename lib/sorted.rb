@@ -28,7 +28,7 @@ module Sorted
     end
     
     def parse_query(sort)
-      if m = sort.match(/(\w+)_(asc|desc)/)
+      if m = sort.match(/([a-zA-Z0-9._]+)_(asc|desc)/)
         [m[1],m[2]]
       end
     end

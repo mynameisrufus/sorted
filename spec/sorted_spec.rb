@@ -124,4 +124,9 @@ describe Sorted::ActionView do
     sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
     sorter.css_class.should == "sorted-asc"
   end
+
+  it "should allow underscores and and full stops in" do
+    sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC', {:sort => "users.email_desc!users.first_name_desc"})
+    sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC"
+  end
 end
