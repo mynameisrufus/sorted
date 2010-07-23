@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rufus Post"]
   s.date = %q{2010-07-23}
-  s.description = %q{lets you sort tables (or somthing else) using a view helper and a custom scope}
+  s.description = %q{lets you sort large data sets using view helpers and a scope}
   s.email = %q{rufuspost@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
