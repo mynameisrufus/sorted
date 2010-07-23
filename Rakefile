@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "sorted"
     gem.summary = %Q{sort a table}
-    gem.description = %Q{lets you sort tables (or somthing else) using a view helper and a custom scope}
+    gem.description = %Q{lets you sort large data sets using view helpers and a scope}
     gem.email = "rufuspost@gmail.com"
     gem.homepage = "http://github.com/mynameisrufus/sorted"
     gem.authors = ["Rufus Post"]
