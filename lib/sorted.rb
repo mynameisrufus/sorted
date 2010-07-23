@@ -8,6 +8,7 @@ module Sorted
           parse_sort(@params[:sort])
         end
       end
+      self
     end
     
     def parse_sort(sort)
@@ -23,14 +24,18 @@ module Sorted
     end
     
     def parse_query(sort)
-      sort.match(/(\w+)_(asc|desc)/) do |m|
-        Hash[m[1],m[2]]
+      if m = sort.match(/([a-z0-9._]+)_(asc|desc)/i)
+        Hash[m[1],m[2].downcase]
+      else
+        Hash
       end
     end
 
     def parse_sql(sql)
-      sql.match(/(([a-zA-Z._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._]+)/) do |m|
-        Hash[(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
+      if m = sql.match(/(([a-z0-9._]+)\s([asc|desc]+)|[a-z._]+)/i)
+        Hash[(m[1] || m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
+      else
+        Hash
       end
     end
 
@@ -71,7 +76,8 @@ module Sorted
     end
 
     def params
-      @params[:sort] = to_s
+      @params ||= {}
+      @params[:sort] = to_s unless _hash.empty?
       @params
     end
 
