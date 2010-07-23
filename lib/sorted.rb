@@ -24,16 +24,16 @@ module Sorted
     end
     
     def parse_query(sort)
-      if m = sort.match(/([a-z0-9._]+)_(asc|desc)/i)
-        Hash[m[1],m[2].downcase]
+      if m = sort.match(/(\w+)_(asc|desc)/)
+        Hash[m[1],m[2]]
       else
         Hash
       end
     end
 
     def parse_sql(sql)
-      if m = sql.match(/(([a-z0-9._]+)\s([asc|desc]+)|[a-z._]+)/i)
-        Hash[(m[1] || m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
+      if m = sql.match(/(([a-zA-Z._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._]+)/)
+        Hash[(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
       else
         Hash
       end
