@@ -40,12 +40,12 @@ describe Sorted::ActionView do
 
   it "should return a nice hash from the order sql" do
     sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.order_queue.should == {"email" => "asc", "phone" => "asc", "name" => "desc"}
+    sorter.order_queue.should == [["email", "asc"], ["phone", "asc"], ["name", "desc"]]
   end
 
   it "should return a nice hash from the sort params" do
     sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.sort_queue.should == {"email" => "desc", "name" => "desc"}
+    sorter.sort_queue.should == [["email", "desc"], ["name", "desc"]]
   end
   
   it "should not toggle the sort order and include any sql orders not in sort params" do
@@ -84,10 +84,10 @@ describe Sorted::ActionView do
     sorter.toggle.params.should == {:sort => "name_asc!email_desc!phone_desc"}
   end
 
-  it "should not fail this test" do
+  it "should should fail becasue the sort order is incorect" do
     sorter = Sorted::Sorter.new(:jsci_complete, {:sort => "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"})
     sorter.toggle
-    sorter.to_s.should == "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"
+    sorter.to_s.should_not == "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"
   end
 
   it "should return a hash of options for url builder with sorted query string" do
