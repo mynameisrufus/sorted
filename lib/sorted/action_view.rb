@@ -9,11 +9,7 @@ module Sorted
 
     def link_to_sorted(name, order, options = {})
       sorter = sorted(order)
-      unless options[:class].nil?
-        options[:class] = "#{options[:class]} #{sorter.css_class}"
-      else
-        options.merge(:class => sorter.css_class)
-      end
+      options[:class] = options[:class].nil? ? sorter.css_class : "#{options[:class]} #{sorter.css_class}"
       link_to(name, sorter.params, options)
     end
   end
