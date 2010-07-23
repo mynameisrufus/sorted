@@ -59,9 +59,9 @@ describe Sorted::ActionView do
   end
 
   it "should not change the direction of name using view helper" do
-    @controller.params = {:sort => "name_desc"}
+    @controller.params = {:sort => "name_desc!email_asc"}
     sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
-    sorter.toggle.to_hash.should == {"email" => "asc", "name" => "desc"}
+    sorter.toggle.to_hash.should == {"email" => "desc", "name" => "desc"}
   end
 
   it "should reverse email direction using view helper" do

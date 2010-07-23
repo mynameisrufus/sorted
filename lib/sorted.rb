@@ -41,9 +41,9 @@ module Sorted
 
     def toggle
       @_hash = {}
-      sort_queue.each do |os|
-        if order_queue.key?(os[0])
-          @_hash = _hash.merge(os[0] => (case os[1]; when "asc"; "desc"; when "desc"; "asc" end))
+      order_queue.each do |os|
+        if sort_queue.key?(os[0])
+          @_hash = _hash.merge(os[0] => (case sort_queue.fetch(os[0]); when "asc"; "desc"; when "desc"; "asc" end))
         end
       end
       sort_queue.each do |s|
