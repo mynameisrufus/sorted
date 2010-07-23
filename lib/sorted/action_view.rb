@@ -4,7 +4,7 @@ require 'sorted'
 module Sorted
   module ActionView
     def sorted(order)
-      Sorter.new(order, (request.get? && !params.nil?) ? params.dup : nil).toggle
+      ::Sorted::Sorter.new(order, (request.get? && !params.nil?) ? params.dup : nil).toggle
     end
 
     def link_to_sorted(name, order, options = {})

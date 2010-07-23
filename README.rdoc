@@ -4,10 +4,6 @@ Sorted is a simple library that lets you sort things using ActiveRecord and crea
 
 It will toggle your sort order for you and is ideal for working with large datasets with {will_paginate}[http://github.com/mislav/will_paginate]
 
-== Requirements
-
-activerecord >= 3.0.0
-
 == Example
 
 === The view:
@@ -26,8 +22,25 @@ Or on the next page load when you then sort by something else....
 
 This will initially sort by email ascending:
 
-  @users = User.sorted(:email, params[:sort]).paginate(:page => params[:page])
+  @users = User.sorted(:order => "email ASC", :sort => params[:sort]).paginate(:page => params[:page])
 
-This will initially sort by email descending:
+== Rails 2.3.x
 
-  @users = User.sorted('email DESC', params[:sort]).paginate(:page => params[:page])
+This gem works with rails 2.3.x but you will have to roll your own scope and view helper
+
+Here is the scope:
+
+  named_scope :sorted, lambda { |params|
+    { :order =>  Sorted::Sorter.new(params[:order], {:sort => params[:sort]}).to_sql }
+  }
+
+And this in your application:
+
+  def sorted(order)
+    Sorted::Sorter.new(order, (request.get? && !params.nil?) ? params.dup : nil).toggle
+  end
+
+  def link_to_sorted(name, order)
+    sorter = sorted(order)
+    link_to(name, sorter.params, {:class => sorter.css_class})
+  end
