@@ -46,15 +46,15 @@ module Sorted
       end.each do |os|
         @_array << [os[0], (case sort_queue.assoc(os[0])[1]; when "asc"; "desc"; when "desc"; "asc" end)]
       end
-      sort_queue.select do |s|
-        !@_array.flatten.include?(s[0])
-      end.each do |s|
-        @_array << [s[0], s[1]]
-      end
       order_queue.select do |o|
         !@_array.flatten.include?(o[0])
       end.each do |o|
         @_array << [o[0], o[1]]
+      end
+      sort_queue.select do |s|
+        !@_array.flatten.include?(s[0])
+      end.each do |s|
+        @_array << [s[0], s[1]]
       end
       self
     end
