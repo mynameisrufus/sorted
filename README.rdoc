@@ -14,7 +14,7 @@ This will make a url like this:
 
   http://myapp/users?sort=email_asc
 
-Or on the next page load when you then sort by something else....
+or on the next page load when you then sort by something else....
 
   http://myapp/users?sort=name_asc!email_asc
 
@@ -26,7 +26,7 @@ This will initially sort by email ascending:
 
 == Advanced
 
-You might want to roll your own link_to_sorted method if you wanted to use jQuery ui css classes for example, all you need is the sorted object.
+You might want to roll your own link_to_sorted method to use jQuery ui css classes for example, all you need is the sorted object.
 
   def link_to_sorted(name, order)
     sorter = sorted(order)
@@ -45,13 +45,13 @@ You might want to roll your own link_to_sorted method if you wanted to use jQuer
 
 This gem works with rails 2.3.x but you will have to roll your own scope and view helper.
 
-Here is the named scope:
+Here is the named scope for you model(s):
 
   named_scope :sorted, lambda { |params|
     { :order =>  Sorted::Sorter.new(params[:order], {:sort => params[:sort]}).to_sql }
   }
 
-And this in your application helper:
+and the the application helper methods:
 
   def sorted(order)
     Sorted::Sorter.new(order, (request.get? && !params.nil?) ? params.dup : nil).toggle
