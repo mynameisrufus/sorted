@@ -120,9 +120,9 @@ describe Sorted::ActionView do
     sorter.to_s.should == "email_asc"
   end
 
-  it "should return css class" do
+  it "should return the order of the first attribute" do
     sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
-    sorter.css_class.should == "sorted-asc"
+    sorter.order_first.should == "asc"
   end
 
   it "should allow underscores and and full stops in" do

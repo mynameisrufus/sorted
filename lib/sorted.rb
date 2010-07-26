@@ -28,7 +28,7 @@ module Sorted
     end
     
     def parse_query(sort)
-      if m = sort.match(/([a-zA-Z0-9._]+)_(asc|desc)/)
+      if m = sort.match(/([a-zA-Z0-9._]+)_(asc|desc)$/)
         [m[1],m[2]]
       end
     end
@@ -49,17 +49,17 @@ module Sorted
       order_queue.select do |o|
         !@_array.flatten.include?(o[0])
       end.each do |o|
-        @_array << [o[0], o[1]]
+        @_array << o
       end
       sort_queue.select do |s|
         !@_array.flatten.include?(s[0])
       end.each do |s|
-        @_array << [s[0], s[1]]
+        @_array << s
       end
       self
     end
 
-    def un_toggle
+    def reset
       @_array = default
       self
     end
@@ -76,8 +76,12 @@ module Sorted
       _array.map{|a| a.join('_')}.join('!')
     end
 
-    def css_class
-      "sorted-#{_array[0][1]}"
+    def to_a
+      _array
+    end
+
+    def order_first
+      _array.empty? ? nil : _array[0][1]
     end
 
     def params
@@ -96,13 +100,11 @@ module Sorted
     
     private
     def default
-      _default = sort_queue.dup
+      sq = sort_queue.dup
       order_queue.each do |o|
-        unless _default.flatten.include?(o[0])
-          _default << [o[0], o[1]]
-        end
+          sq << o unless sq.flatten.include?(o[0])
       end
-      _default
+      sq
     end
     
     def _array

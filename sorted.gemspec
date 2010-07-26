@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sorted}
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rufus Post"]
-  s.date = %q{2010-07-23}
+  s.date = %q{2010-07-26}
   s.description = %q{lets you sort large data sets using view helpers and a scope}
   s.email = %q{rufuspost@gmail.com}
   s.extra_rdoc_files = [
