@@ -8,8 +8,8 @@ module Sorted
     end
 
     def link_to_sorted(name, order, options = {})
-      sorter = sorted(order)
-      options[:class] = options[:class].nil? ? "sorted-#{sorter.order_first}" : "#{options[:class]} sorted-#{sorter.order_first}"
+      sorter          = sorted(order)
+      options[:class] = options[:class].nil? ? sorter.to_css : "#{options[:class]} #{sorter.to_css}"
       link_to(name, sorter.params, options)
     end
   end

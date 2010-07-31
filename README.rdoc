@@ -30,13 +30,13 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
 
   def link_to_sorted(name, order)
     sorter = sorted(order)
-    css_class = case sorter.order_first
-                when "asc"
-                  "css_right ui-icon ui-icon-triangle-1-n"
-                when "desc"
-                  "css_right ui-icon ui-icon-triangle-1-s"
-                else
-                  "css_right ui-icon ui-icon-carat-2-n-s"
+    css_class = case sorter.to_css
+                when "sorted asc"
+                  "ui-icon ui-icon-triangle-1-n"
+                when "sorted desc"
+                  "ui-icon ui-icon-triangle-1-s"
+                when "sorted"
+                  "ui-icon ui-icon-carat-2-n-s"
                 end
     link_to(name, sorter.params) + content_tag(:span, nil, {:class => css_class}) 
   end
@@ -48,7 +48,7 @@ This gem works with rails 2.3.x but you will have to roll your own scope and vie
 Here is the named scope for you model(s):
 
   named_scope :sorted, lambda { |params|
-    { :order =>  Sorted::Sorter.new(params[:order], {:sort => params[:sort]}).to_sql }
+    params.merge(:order => Sorted::Sorter.new(params[:order], {:sort => params.delete(:sort)}).to_sql)
   }
 
 and the the application helper methods:
@@ -59,5 +59,5 @@ and the the application helper methods:
 
   def link_to_sorted(name, order)
     sorter = sorted(order)
-    link_to(name, sorter.params, {:class => "sorted-#{sorter.order_first}"})
+    link_to(name, sorter.params, {:class => sorter.to_css})
   end

@@ -44,7 +44,11 @@ module Sorted
       order_queue.select do |os|
         sort_queue.flatten.include?(os[0])
       end.each do |os|
-        @_array << [os[0], (case sort_queue.assoc(os[0])[1]; when "asc"; "desc"; when "desc"; "asc" end)]
+        if sort_queue[0, order_queue.size].flatten.include?(os[0])
+          @_array << [os[0], (case sort_queue.assoc(os[0])[1]; when "asc"; "desc"; when "desc"; "asc" end)]
+        else
+          @_array << [os[0], sort_queue.assoc(os[0])[1]]
+        end
       end
       order_queue.select do |o|
         !@_array.flatten.include?(o[0])
@@ -79,14 +83,18 @@ module Sorted
     def to_a
       _array
     end
-
-    def order_first
-      _array.empty? ? nil : _array[0][1]
+    
+    def to_css
+      if sort_queue.flatten.include?(order_queue.first.first)
+        "sorted #{sort_queue.assoc(order_queue.first.first).last}"
+      else
+        "sorted"
+      end
     end
 
     def params
       @params ||= {}
-      @params[:sort] = to_s unless _array.empty?
+      @params[:sort] = to_s
       @params
     end
 
