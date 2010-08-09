@@ -34,31 +34,44 @@ module Sorted
     end
 
     def parse_sql(sql)
-      if m = sql.match(/(([a-zA-Z._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._]+)/)
+      if m = sql.match(/(([a-zA-Z._:]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._:]+)/)
         [(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
       end
     end
-
+    
     def toggle
       @_array = []
-      order_queue.select do |os|
-        sort_queue.flatten.include?(os[0])
-      end.each do |os|
-        if sort_queue[0, order_queue.size].flatten.include?(os[0])
-          @_array << [os[0], (case sort_queue.assoc(os[0])[1]; when "asc"; "desc"; when "desc"; "asc" end)]
+      sorts  = sort_queue.transpose.first
+      orders = order_queue.transpose.first
+      unless sorts.nil?
+        if orders == sorts.take(orders.size)
+          orders.select do |order|
+            sorts.include?(order)
+          end.each do |order|
+            @_array << [order, (case sort_queue.assoc(order).last; when "asc"; "desc"; when "desc"; "asc" end)]
+          end
         else
-          @_array << [os[0], sort_queue.assoc(os[0])[1]]
+          orders.select do |order|
+            sorts.include?(order)
+          end.each do |order|
+            @_array << [order, sort_queue.assoc(order).last]
+          end
+        end
+        sorts.select do |sort|
+          orders.include?(sort) && !@_array.flatten.include?(sort)
+        end.each do |sort|
+          @_array << [sort, sort_queue.assoc(sort).last]
         end
       end
-      order_queue.select do |o|
-        !@_array.flatten.include?(o[0])
-      end.each do |o|
-        @_array << o
+      order_queue.select do |order|
+        !@_array.flatten.include?(order[0])
+      end.each do |order|
+        @_array << order
       end
-      sort_queue.select do |s|
-        !@_array.flatten.include?(s[0])
-      end.each do |s|
-        @_array << s
+      sort_queue.select do |sort|
+        !@_array.flatten.include?(sort[0])
+      end.each do |sort|
+        @_array << sort
       end
       self
     end

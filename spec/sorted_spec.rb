@@ -13,9 +13,9 @@ describe Sorted::Sorter, "parse methods" do
     sorter.sort_queue.should == [["email", "desc"], ["name", "desc"]]
   end
 
-  it "should allow underscores and and full stops in" do
-    sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC', {:sort => "users.email_desc!users.first_name_desc"})
-    sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC"
+  it "should allow underscores, full stops and colons in" do
+    sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt', {:sort => "users.email_desc!users.first_name_desc"})
+    sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt ASC"
   end
 end
 
@@ -27,7 +27,12 @@ describe Sorted::Sorter, "logic:" do
 
   it "should toggle the sort order and include any sql orders not in sort params" do
     sorter = Sorted::Sorter.new("email DESC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.toggle.to_a.should == [["email", "asc"], ["name", "asc"], ["phone", "asc"]]
+    sorter.toggle.to_a.should == [["email", "desc"], ["name", "desc"], ["phone", "asc"]]
+  end
+
+  it "should toggle the sort order and include any sql orders not in sort params" do
+    sorter = Sorted::Sorter.new("email DESC, phone ASC, name DESC", {:sort => "mobile_asc!email_desc!phone_asc!name_desc"})
+    sorter.toggle.to_a.should == [["email", "desc"], ["phone", "asc"], ["name", "desc"], ["mobile", "asc"]]
   end
 
   it "should return an sql sort string" do
@@ -61,6 +66,15 @@ describe Sorted::Sorter, "logic:" do
     sorter = Sorted::Sorter.new(:email, {:sort => "email_desc"})
     sorter.toggle
     sorter.to_css.should == "sorted desc"
+  end
+
+  it "should toggle two order params at once" do
+    first = Sorted::Sorter.new("email ASC, phone ASC")
+    first.toggle.to_a.should == [["email", "asc"],["phone", "asc"]]
+    second = Sorted::Sorter.new(:name, {:sort => first.to_s})
+    second.toggle.to_a.should == [["name", "asc"], ["email", "asc"],["phone", "asc"]]
+    third = Sorted::Sorter.new("email ASC, phone ASC", {:sort => second.to_s})
+    third.toggle.to_a.should == [["email", "asc"],["phone", "asc"], ["name", "asc"]]
   end
 end
 
