@@ -4,6 +4,8 @@ Sorted is a simple object that will take an sql order string and a url sort stri
 
 Using Rails master it will create a `sorted` scope and a two view helpers
 
+  gem install sorted
+
 == Example
 
 === The view:
