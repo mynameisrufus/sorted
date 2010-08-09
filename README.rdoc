@@ -38,7 +38,7 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
                 when "sorted"
                   "ui-icon ui-icon-carat-2-n-s"
                 end
-    link_to(name, sorter.params) + content_tag(:span, nil, {:class => sorter.to_css}) 
+    link_to(name, sorter.params) + content_tag(:span, nil, {:class => css_class}) 
   end
 
 == Rails 2.3.x
