@@ -5,12 +5,12 @@ require 'sorted'
 describe Sorted::Sorter, "parse methods" do
   it "should return a nice array from the order sql" do
     sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.order_queue.should == [["email", "asc"], ["phone", "asc"], ["name", "desc"]]
+    sorter.orders.should == [["email", "asc"], ["phone", "asc"], ["name", "desc"]]
   end
 
   it "should return a nice array from the sort params" do
     sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.sort_queue.should == [["email", "desc"], ["name", "desc"]]
+    sorter.sorts.should == [["email", "desc"], ["name", "desc"]]
   end
 
   it "should allow underscores, full stops and colons in" do
