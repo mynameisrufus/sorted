@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rufus Post"]
-  s.date = %q{2010-08-09}
+  s.date = %q{2010-08-29}
   s.description = %q{lets you sort large data sets using view helpers and a scope}
   s.email = %q{rufuspost@gmail.com}
   s.extra_rdoc_files = [
@@ -24,9 +24,10 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/sorted.rb",
-     "lib/sorted/action_view.rb",
-     "lib/sorted/active_record.rb",
+     "lib/sorted/finders/active_record.rb",
      "lib/sorted/railtie.rb",
+     "lib/sorted/sorter.rb",
+     "lib/sorted/toggler.rb",
      "sorted.gemspec",
      "spec/sorted_spec.rb",
      "spec/spec_helper.rb"

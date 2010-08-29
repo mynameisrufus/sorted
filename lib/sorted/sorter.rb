@@ -40,7 +40,7 @@ module Sorted
     end
 
     def toggle
-      @array = Toggler.toggle orders, sorts
+      @array = Toggler.new(orders, sorts).to_a
       self
     end
 

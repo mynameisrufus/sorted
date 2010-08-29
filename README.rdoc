@@ -40,7 +40,8 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
                 when "sorted"
                   "ui-icon ui-icon-carat-2-n-s"
                 end
-    link_to(name, sorter.params) + content_tag(:span, nil, {:class => css_class}) 
+    name = name.nil? ? "" : name.to_s
+    link_to(content_tag(:span, nil, {:class => css_class}) + name, sorter.params)
   end
 
 == Rails 2.3.x
@@ -50,7 +51,7 @@ This gem works with rails 2.3.x but you will have to roll your own scope and vie
 Here is the named scope for your model(s):
 
   named_scope :sorted, lambda { |params|
-    params.merge(:order => Sorted::Sorter.new(params[:order], {:sort => params.delete(:sort)}).to_sql)
+    { :order =>  Sorted::Sorter.new(params[:order], {:sort => params[:sort]}).to_sql }
   }
 
 and the the application helper methods:
