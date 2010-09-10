@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{sorted}
-  s.version = "0.3.4"
+  s.version = "0.3.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rufus Post"]
-  s.date = %q{2010-08-29}
+  s.date = %q{2010-09-10}
   s.description = %q{lets you sort large data sets using view helpers and a scope}
   s.email = %q{rufuspost@gmail.com}
   s.extra_rdoc_files = [
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "lib/sorted/railtie.rb",
      "lib/sorted/sorter.rb",
      "lib/sorted/toggler.rb",
+     "lib/sorted/view_helpers/action_view.rb",
      "sorted.gemspec",
      "spec/sorted_spec.rb",
      "spec/spec_helper.rb"
@@ -39,6 +40,8 @@ Gem::Specification.new do |s|
   s.summary = %q{sort a table}
   s.test_files = [
     "spec/spec_helper.rb",
+     "spec/sorter_spec.rb",
+     "spec/toggler_spec.rb",
      "spec/sorted_spec.rb"
   ]
 

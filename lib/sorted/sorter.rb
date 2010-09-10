@@ -2,7 +2,7 @@ module Sorted
   class Sorter
     def initialize(*args)
       parse_order(args[0])
-      unless args[1].nil?
+      if args[1].is_a?(Hash)
         @params = args[1]
         unless @params[:sort].nil?
           parse_sort @params[:sort]
@@ -50,7 +50,7 @@ module Sorted
     end
 
     def to_hash
-      array.inject({}){|h,a| h.merge(Hash[a[0],a[1]]) }
+      array.inject({}){|h,a| h.merge(Hash[a[0],a[1]])}
     end
     
     def to_sql

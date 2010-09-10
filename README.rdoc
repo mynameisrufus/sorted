@@ -31,7 +31,8 @@ This will initially sort by email ascending:
 You might want to roll your own link_to_sorted method to use jQuery ui css classes for example, all you need is the sorted object.
 
   def link_to_sorted(name, order)
-    sorter = sorted(order)
+    sorter    = sorted(order)
+    name      = name.nil? ? "" : name.to_s
     css_class = case sorter.to_css
                 when "sorted asc"
                   "ui-icon ui-icon-triangle-1-n"
@@ -40,7 +41,6 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
                 when "sorted"
                   "ui-icon ui-icon-carat-2-n-s"
                 end
-    name = name.nil? ? "" : name.to_s
     link_to(content_tag(:span, nil, {:class => css_class}) + name, sorter.params)
   end
 

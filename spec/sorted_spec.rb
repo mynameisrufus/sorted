@@ -2,85 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'action_controller'
 require 'sorted'
 
-describe Sorted::Sorter, "parse methods" do
-  it "should return a nice array from the order sql" do
-    sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.orders.should == [["email", "asc"], ["phone", "asc"], ["name", "desc"]]
-  end
-
-  it "should return a nice array from the sort params" do
-    sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.sorts.should == [["email", "desc"], ["name", "desc"]]
-  end
-
-  it "should allow underscores, full stops and colons in" do
-    sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt', {:sort => "users.email_desc!users.first_name_desc"})
-    sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt ASC"
-  end
-end
-
-describe Sorted::Sorter, "logic:" do
-  it "should not toggle the sort order and include any sql orders not in sort params" do
-    sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.to_a.should == [["email", "desc"], ["name", "desc"], ["phone", "asc"]]
-  end
-
-  it "should toggle the sort order and include any sql orders not in sort params" do
-    sorter = Sorted::Sorter.new("email DESC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
-    sorter.toggle.to_a.should == [["email", "desc"], ["name", "desc"], ["phone", "asc"]]
-  end
-
-  it "should toggle the sort order and include any sql orders not in sort params" do
-    sorter = Sorted::Sorter.new("email DESC, phone ASC, name DESC", {:sort => "mobile_asc!email_desc!phone_asc!name_desc"})
-    sorter.toggle.to_a.should == [["email", "desc"], ["phone", "asc"], ["name", "desc"], ["mobile", "asc"]]
-  end
-
-  it "should return an sql sort string" do
-    Sorted::Sorter.new(:email).to_sql.should == "email ASC"
-    Sorted::Sorter.new(:email, {:sort => "name_desc!email_desc"}).to_sql.should == "name DESC, email DESC"
-  end
-
-  it "should handle a large initial order string" do
-    sorter = Sorted::Sorter.new('email ASC, name DESC, phone ASC', {:sort => "email_desc!name_desc"})
-    sorter.to_sql.should == "email DESC, name DESC, phone ASC"
-  end
-
-  it "should handle a large initial order string" do
-    sorter = Sorted::Sorter.new('email ASC, phone DESC, name ASC', {:sort => "email_desc!name_desc"})
-    sorter.to_sql.should == "email DESC, name DESC, phone DESC"
-  end
-
-  it "should should fail becasue the sort order is incorect" do
-    sorter = Sorted::Sorter.new(:jsci_complete, {:sort => "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"})
-    sorter.toggle
-    sorter.to_s.should_not == "parent_id_desc!non_vocational_complete_desc!jsci_complete_desc"
-  end
-
-  it "should return css base class for to_css if not in sort params" do
-    sorter = Sorted::Sorter.new(:email)
-    sorter.toggle
-    sorter.to_css.should == "sorted"
-  end
-
-  it "should return css class for to_css" do
-    sorter = Sorted::Sorter.new(:email, {:sort => "email_desc"})
-    sorter.toggle
-    sorter.to_css.should == "sorted desc"
-  end
-
-  it "should toggle two order params at once" do
-    first = Sorted::Sorter.new("email ASC, phone ASC")
-    first.toggle.to_a.should == [["email", "asc"],["phone", "asc"]]
-    second = Sorted::Sorter.new(:name, {:sort => first.to_s})
-    second.toggle.to_a.should == [["name", "asc"], ["email", "asc"],["phone", "asc"]]
-    third = Sorted::Sorter.new("email ASC, phone ASC", {:sort => second.to_s})
-    third.toggle.to_a.should == [["email", "asc"],["phone", "asc"], ["name", "asc"]]
-  end
-end
-
-describe Sorted::ActiveRecord do
+describe Sorted::Finders::ActiveRecord do
   before(:each) do
-    Sorted::ActiveRecord.enable!
+    Sorted::Finders::ActiveRecord.enable!
   end
 
   it "should integrate with ActiveRecord::Base" do
@@ -88,7 +12,7 @@ describe Sorted::ActiveRecord do
   end
 end
 
-describe Sorted::ActionView do
+describe Sorted::ViewHelpers::ActionView do
   before(:each) do
     class TestController
       def params
@@ -107,11 +31,15 @@ describe Sorted::ActionView do
       def get?; true end
     end
     @controller = TestController.new
-    ActionView::Base.send(:include, Sorted::ActionView)
+    ActionView::Base.send(:include, Sorted::ViewHelpers::ActionView)
   end
   
   it "should integrate with ActionView::Base" do
     ActionView::Base.new.should respond_to(:sorted)
+  end
+
+  it "should integrate with ActionView::Base" do
+    ActionView::Base.new.should respond_to(:link_to_sorted)
   end
 
   it "should not change the direction of name using view helper" do
