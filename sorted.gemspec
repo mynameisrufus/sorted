@@ -31,7 +31,9 @@ Gem::Specification.new do |s|
      "lib/sorted/view_helpers/action_view.rb",
      "sorted.gemspec",
      "spec/sorted_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/sorter_spec.rb",
+     "spec/spec_helper.rb",
+     "spec/toggler_spec.rb"
   ]
   s.homepage = %q{http://github.com/mynameisrufus/sorted}
   s.rdoc_options = ["--charset=UTF-8"]
