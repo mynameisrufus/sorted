@@ -4,9 +4,11 @@ Sorted is a simple object that will take an sql order string and a url sort stri
 
 Using Rails master it will create a `sorted` scope and a two view helpers
 
-  gem install sorted
-
 == Example
+
+=== Gemfile
+
+  gem sorted
 
 === The view:
 
@@ -25,6 +27,8 @@ or on the next page load when you then sort by something else....
 This will initially sort by email ascending:
 
   @users = User.sorted(:order => "email ASC", :sort => params[:sort]).paginate(:page => params[:page])
+
+Or you can just clone the example app https://github.com/mynameisrufus/sorted_app
 
 == Presentation
 
@@ -54,7 +58,7 @@ Tables are best displayed with alternating shades for each row, so put this in y
 
 Then in your table do something like this:
 
-  %tr{:class => odd_even}
+  <tr class="<%= odd_even %>">
 
 == Rails 2.3.x
 
