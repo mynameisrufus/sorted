@@ -1,14 +1,15 @@
 module Sorted
   class Sorter
-    def initialize(*args)
-      parse_order(args[0])
-      if args[1].is_a?(Hash)
-        @params = args[1]
-        unless @params[:sort].nil?
+    def initialize(order, params = nil)
+      if order.is_a?(String) || order.is_a?(Symbol)
+        parse_order(order)
+      end
+      if params.is_a?(Hash)
+        @params = params
+        if @params[:sort].is_a?(String) 
           parse_sort @params[:sort]
         end
       end
-      self
     end
     
     def parse_sort(sort_string)
@@ -88,16 +89,16 @@ module Sorted
     end
     
     private
-      def default
-        sorts_new = sorts.dup
-        orders.each do |order|
-            sorts_new << order unless sorts_new.flatten.include?(order[0])
-        end
-        sorts_new
+    def default
+      sorts_new = sorts.dup
+      orders.each do |order|
+          sorts_new << order unless sorts_new.flatten.include?(order[0])
       end
-      
-      def array
-        @array ||= default
-      end
+      sorts_new
+    end
+    
+    def array
+      @array ||= default
+    end
   end
 end
