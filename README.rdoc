@@ -26,7 +26,7 @@ This will initially sort by email ascending:
 
   @users = User.sorted(:order => "email ASC", :sort => params[:sort]).paginate(:page => params[:page])
 
-== Advanced
+== Presentation
 
 You might want to roll your own link_to_sorted method to use jQuery ui css classes for example, all you need is the sorted object.
 
@@ -43,6 +43,18 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
                 end
     link_to(content_tag(:span, nil, {:class => css_class}) + name, sorter.params)
   end
+
+Tables are best displayed with alternating shades for each row, so put this in your helper:
+
+  def odd_even
+    @odd_even ||= 0
+    @odd_even += 1
+    (@odd_even % 2) == 1 ? 'odd' : 'even'
+  end
+
+Then in your table do something like this:
+
+  %tr{:class => odd_even}
 
 == Rails 2.3.x
 
