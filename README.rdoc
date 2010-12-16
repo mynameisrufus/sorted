@@ -2,7 +2,7 @@
 
 Sorted is a simple object that will take an sql order string and a url sort string to let you sort large datasets over many pages (using {will_paginate}[http://github.com/mislav/will_paginate]) without loosing state.
 
-Using Rails master it will create a `sorted` scope and a two view helpers
+Using Rails master it will create a sorted scope and a two view helpers
 
 == Example
 
@@ -10,7 +10,7 @@ Using Rails master it will create a `sorted` scope and a two view helpers
 
   gem sorted
 
-=== The view:
+=== View
 
   link_to_sorted "Email", :email
 
@@ -22,7 +22,7 @@ or on the next page load when you then sort by something else....
 
   http://myapp/users?sort=name_asc!email_asc
 
-=== The model:
+=== Model
 
 This will initially sort by email ascending:
 
@@ -36,7 +36,6 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
 
   def link_to_sorted(name, order)
     sorter    = sorted(order)
-    name      = name.nil? ? "" : name.to_s
     css_class = case sorter.to_css
                 when "sorted asc"
                   "ui-icon ui-icon-triangle-1-n"
@@ -45,7 +44,7 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
                 when "sorted"
                   "ui-icon ui-icon-carat-2-n-s"
                 end
-    link_to(content_tag(:span, nil, {:class => css_class}) + name, sorter.params)
+    link_to(content_tag(:span, nil, {:class => css_class}) + name.to_s, sorter.params)
   end
 
 Tables are best displayed with alternating shades for each row, so put this in your helper:
