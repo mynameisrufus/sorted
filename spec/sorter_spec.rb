@@ -20,6 +20,7 @@ describe Sorted::Sorter, "parse methods" do
   it "should allow underscores, full stops and colons in" do
     sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt', {:sort => "users.email_desc!users.first_name_desc"})
     sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt ASC"
+    sorter.includes.size.should == 2
   end
 end
 
@@ -27,6 +28,7 @@ describe Sorted::Sorter, "logic:" do
   it "should not toggle the sort order and include any sql orders not in sort params" do
     sorter = Sorted::Sorter.new("email ASC, phone ASC, name DESC", {:sort => "email_desc!name_desc"})
     sorter.to_a.should == [["email", "desc"], ["name", "desc"], ["phone", "asc"]]
+    sorter.includes.size.should == 0
   end
 
   it "should return an sql sort string" do
