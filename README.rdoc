@@ -28,7 +28,13 @@ This will initially sort by email ascending:
 
   @users = User.sorted(:order => "email ASC", :sort => params[:sort]).paginate(:page => params[:page])
 
-Or you can just clone the example app https://github.com/mynameisrufus/sorted_app
+Or you can just clone the example app https://github.com/mynameisrufus/sorted_app.
+
+If you want to sort by a belongs_to relationship, just provide sort order as "RELATIONS.COLUMN ASC|DESC" where
+RELATIONS is the name of the relationship table and COLUMN is an attribute in that table.  For example, 
+assuming the User model belongs_to a :company.
+
+  @users = User.sorted(:order => "companies.name asc", :sort => params[:sort]).paginate(:page => params[:page])
 
 == Presentation
 
