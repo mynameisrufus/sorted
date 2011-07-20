@@ -1,6 +1,8 @@
 module Sorted
   class Sorter
+    attr_reader :includes
     def initialize(order, params = nil)
+      @includes = []
       if order.is_a?(String) || order.is_a?(Symbol)
         parse_order(order)
       end
@@ -30,13 +32,23 @@ module Sorted
     
     def parse_query(sort)
       if m = sort.match(/([a-zA-Z0-9._]+)_(asc|desc)$/)
+        parse_include(m[1])
         [m[1],m[2]]
       end
     end
 
     def parse_sql(order)
       if m = order.match(/(([a-zA-Z._:]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._:]+)/)
-        [(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
+        sort_column = (m[2].nil? ? m[1] : m[2])
+        parse_include(sort_column)
+        [sort_column,(m[3].nil? ? "asc" : m[3].downcase)]
+      end
+    end
+
+    def parse_include(order)
+      if match_data = /^([^\.]+)\..+/.match(order)
+        include_name = match_data[1].singularize.to_sym
+        @includes << include_name unless @includes.include?(include_name)
       end
     end
 
