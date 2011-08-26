@@ -17,9 +17,9 @@ describe Sorted::Sorter, "parse methods" do
     sorter.sorts.should == [["email", "desc"], ["name", "desc"]]
   end
 
-  it "should allow underscores, full stops and colons in" do
-    sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt', {:sort => "users.email_desc!users.first_name_desc"})
-    sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt ASC"
+  it "should allow numbers, underscores, full stops and colons in" do
+    sorter = Sorted::Sorter.new('users.email ASC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt, assessments.column_with_number_123', {:sort => "users.email_desc!users.first_name_desc"})
+    sorter.to_sql.should == "users.email DESC, users.first_name DESC, users.phone_number DESC, assessments.name ASC, assessments.number_as_string::BigInt ASC, assessments.column_with_number_123 ASC"
     sorter.includes.size.should == 2
   end
 end

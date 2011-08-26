@@ -38,7 +38,7 @@ module Sorted
     end
 
     def parse_sql(order)
-      if m = order.match(/(([a-zA-Z._:]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._:]+)/)
+      if m = order.match(/(([a-zA-Z._:][a-zA-Z._:0-9]*)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._:][a-zA-Z._:0-9]*)/)
         sort_column = (m[2].nil? ? m[1] : m[2])
         parse_include(sort_column)
         [sort_column,(m[3].nil? ? "asc" : m[3].downcase)]
