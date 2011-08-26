@@ -14,7 +14,7 @@ module Sorted
             if sorter.includes.size > 0
               # Remove self.name from includes
               my_name = self.name.to_sym
-              real_includes = sorter.includes.remove_if{|include_name| include_name == my_name}
+              real_includes = sorter.includes.delete_if{|include_name| include_name == my_name}
               relation = includes(real_includes) if real_includes.size > 0
             end
             relation.order(sorter.to_sql)
