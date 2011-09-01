@@ -45,6 +45,11 @@ describe Sorted::Sorter, "logic:" do
     sorter = Sorted::Sorter.new('email ASC, phone DESC, name ASC', {:sort => "email_desc!name_desc"})
     sorter.to_sql.should == "email DESC, name DESC, phone DESC"
   end
+
+  it "should substitute symbolic sorts" do
+    sorter = Sorted::Sorter.new('ip_address', :symbolic_sorts => {:ip_address => 'inet_aton(`ip_address`)'})
+    sorter.to_sql.should == "inet_aton(`ip_address`) ASC"
+  end
 end
 
 describe Sorted::Sorter, "to_css" do
