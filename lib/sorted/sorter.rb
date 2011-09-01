@@ -3,6 +3,8 @@ module Sorted
     attr_reader :includes
     def initialize(order, params = nil)
       @includes = []
+      @symbolic_sorts = {}
+
       if order.is_a?(String) || order.is_a?(Symbol)
         parse_order(order)
       end
@@ -11,6 +13,7 @@ module Sorted
         if @params[:sort].is_a?(String) 
           parse_sort @params[:sort]
         end
+        @symbolic_sorts = @params[:symbolic_sorts] || {}
       end
     end
     
@@ -38,7 +41,7 @@ module Sorted
     end
 
     def parse_sql(order)
-      if m = order.match(/(([a-zA-Z._:]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._:]+)/)
+      if m = order.match(/(([a-zA-Z._:][a-zA-Z._:0-9]*)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._:][a-zA-Z._:0-9]*)/)
         sort_column = (m[2].nil? ? m[1] : m[2])
         parse_include(sort_column)
         [sort_column,(m[3].nil? ? "asc" : m[3].downcase)]
@@ -67,7 +70,10 @@ module Sorted
     end
     
     def to_sql
-      array.map{|a| "#{a[0]} #{a[1].upcase}"}.join(', ')
+      array.map do |a|
+        column = @symbolic_sorts[a[0].to_sym] || a[0]
+        "#{column} #{a[1].upcase}"
+      end.join(', ')
     end
 
     def to_s
