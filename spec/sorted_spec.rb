@@ -10,6 +10,34 @@ describe Sorted::Finders::ActiveRecord do
   it "should integrate with ActiveRecord::Base" do
     ActiveRecord::Base.should respond_to(:sorted)
   end
+
+  it "should define a symbolic_sorts method" do
+    ActiveRecord::Base.should respond_to(:symbolic_sort)
+  end
+
+  it "should define symbolic_sorts" do
+    a = Class.new(ActiveRecord::Base)
+    b = Class.new(ActiveRecord::Base)
+
+    a.symbolic_sort(:foo, 'foo')
+    b.symbolic_sort(:bar, 'bar')
+
+    a.instance_variable_get(:@symbolic_sorts).should == {:foo => 'foo'}
+    b.instance_variable_get(:@symbolic_sorts).should == {:bar => 'bar'}
+  end
+
+  it "should add orders to the relation" do
+    a = Class.new(ActiveRecord::Base)
+    relation = a.sorted(:order => nil, :sort => 'a_asc')
+    relation.order_values.should == ["a ASC"]
+  end
+
+  it "should add orders to the relation using symbolic_sorts" do
+    a = Class.new(ActiveRecord::Base)
+    a.symbolic_sort(:ip, 'inet_aton(`ip`)')
+    relation = a.sorted(:order => nil, :sort => 'ip_asc')
+    relation.order_values.should == ["inet_aton(`ip`) ASC"]
+  end
 end
 
 describe Sorted::ViewHelpers::ActionView do
