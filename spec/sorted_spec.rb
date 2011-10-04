@@ -54,6 +54,9 @@ describe Sorted::ViewHelpers::ActionView do
       def request
         Request.new
       end
+      
+      def _prefixes
+      end
     end
     class Request
       def get?; true end
