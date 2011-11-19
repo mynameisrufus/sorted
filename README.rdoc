@@ -1,14 +1,17 @@
 = sorted
 
-Sorted is a simple object that will take an sql order string and a url sort string to let you sort large datasets over many pages (using {will_paginate}[http://github.com/mislav/will_paginate]) without loosing state.
+Sorted is a simple object that will take an sql order string and a url
+sort string to let you sort large datasets over many pages (using
+{will_paginate}[http://github.com/mislav/will_paginatea] so
+{kaminari}[https://github.com/amatsuda/kaminari]) without loosing state.
 
-Using Rails master it will create a sorted scope and a two view helpers
+Using Rails 3x it will create a sorted scope and a two view helpers
 
 == Example
 
 === Gemfile
 
-  gem sorted
+  gem 'sorted' '~> 0.3.9'
 
 === View
 
@@ -26,7 +29,7 @@ or on the next page load when you then sort by something else....
 
 This will initially sort by email ascending:
 
-  @users = User.sorted(:order => "email ASC", :sort => params[:sort]).paginate(:page => params[:page])
+  @users = User.sorted(params[:sort], "email ASC").page(params[:page])
 
 Or you can just clone the example app https://github.com/mynameisrufus/sorted_app.
 
@@ -34,11 +37,22 @@ If you want to sort by a belongs_to relationship, just provide sort order as "RE
 RELATIONS is the name of the relationship table and COLUMN is an attribute in that table.  For example, 
 assuming the User model belongs_to a :company.
 
-  @users = User.sorted(:order => "companies.name asc", :sort => params[:sort]).paginate(:page => params[:page])
+  @users = User.sorted(params[:sort], "companies.name ASC").page(params[:page])
+
+== Notes and typcasting and db function calls
+
+Do your type casting and function calls in your select statement with an
+alias to use Sorted, for example:
+
+  @users = User.select("income::BigInt as bg_income").sort(params[:sort], "bg_income ASC")
+
+or to call a db function:
+
+  @users = User.select("inet_aton(`ip_address`) AS in_ip").sort(params[:sort], "in_ip ASC")
 
 == Presentation
 
-You might want to roll your own link_to_sorted method to use jQuery ui css classes for example, all you need is the sorted object.
+You might want to roll your own +link_to_sorted+ method to use jQuery ui css classes for example, all you need is the sorted object.
 
   def link_to_sorted(name, order)
     sorter    = sorted(order)
@@ -53,17 +67,10 @@ You might want to roll your own link_to_sorted method to use jQuery ui css class
     link_to(content_tag(:span, nil, {:class => css_class}) + name.to_s, sorter.params)
   end
 
-Tables are best displayed with alternating shades for each row, so put this in your helper:
+Tables are best displayed with alternating shades for each row, so add
+an alternating class to you table rows using the rails +cycle+ method:
 
-  def odd_even
-    @odd_even ||= 0
-    @odd_even += 1
-    (@odd_even % 2) == 1 ? 'odd' : 'even'
-  end
-
-Then in your table do something like this:
-
-  <tr class="<%= odd_even %>">
+  <tr class="<%= cycle 'odd', 'even' %>">
 
 == Rails 2.3.x
 
@@ -71,8 +78,9 @@ This gem works with rails 2.3.x but you will have to roll your own scope and vie
 
 Here is the named scope for your model(s):
 
-  named_scope :sorted, lambda { |params|
-    { :order =>  Sorted::Sorter.new(params[:order], {:sort => params[:sort]}).to_sql }
+  named_scope :sorted, lambda { |sort, default_order|
+    { :order =>  Sorted::Sorter.new(sort, default_order).to_sql }
+    { :order =>  Sorted::Sorter.new(sort, default_order).to_sql }
   }
 
 and the the application helper methods:

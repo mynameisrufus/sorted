@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "sorted"
 
   s.add_development_dependency "bundler", ">= 1.0.0"
-  s.add_development_dependency "rails", ">= 3.0.0"
+  s.add_development_dependency "rails", ">= 3.1.2"
   s.add_development_dependency "rspec", ">= 2.0.0"
 
 

@@ -5,7 +5,7 @@ module Sorted
     initializer "sorted.active_record" do |app|
       if defined? ::ActiveRecord
         require 'sorted/finders/active_record'
-        Sorted::Finders::ActiveRecord.enable!
+        Sorted::Orms::ActiveRecord.enable!
       end
     end
     

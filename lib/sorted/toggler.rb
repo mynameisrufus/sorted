@@ -1,4 +1,11 @@
 module Sorted
+  # takes parsed data and transposes it
+  #
+  #   Sorted::Toggler.new(order, sort)
+  #   Sorted::Toggler.new(
+  #     [['name', 'asc'], ['phone', 'desc']],
+  #     [['name', 'desc']]
+  #   )
   class Toggler
     def initialize(orders, sorts)
       @array = []

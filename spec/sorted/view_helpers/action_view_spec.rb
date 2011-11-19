@@ -1,82 +1,43 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 require 'action_controller'
-require 'sorted'
 
-describe Sorted::Finders::ActiveRecord do
-  before(:each) do
-    Sorted::Finders::ActiveRecord.enable!
-  end
-
-  it "should integrate with ActiveRecord::Base" do
-    ActiveRecord::Base.should respond_to(:sorted)
-  end
-
-  it "should define a symbolic_sorts method" do
-    ActiveRecord::Base.should respond_to(:symbolic_sort)
-  end
-
-  it "should define symbolic_sorts" do
-    a = Class.new(ActiveRecord::Base)
-    b = Class.new(ActiveRecord::Base)
-
-    a.symbolic_sort(:foo, 'foo')
-    b.symbolic_sort(:bar, 'bar')
-
-    a.instance_variable_get(:@symbolic_sorts).should == {:foo => 'foo'}
-    b.instance_variable_get(:@symbolic_sorts).should == {:bar => 'bar'}
-  end
-
-  it "should add orders to the relation" do
-    a = Class.new(ActiveRecord::Base)
-    relation = a.sorted(:order => nil, :sort => 'a_asc')
-    relation.order_values.should == ["a ASC"]
-  end
-
-  it "should add orders to the relation using symbolic_sorts" do
-    a = Class.new(ActiveRecord::Base)
-    a.symbolic_sort(:ip, 'inet_aton(`ip`)')
-    relation = a.sorted(:order => nil, :sort => 'ip_asc')
-    relation.order_values.should == ["inet_aton(`ip`) ASC"]
-  end
-end
 
 describe Sorted::ViewHelpers::ActionView do
-  before(:each) do
-    class TestController
-      def params
-        @params ||= {}
-      end
-
-      def params=(params)
-        @params = params
-      end
-
-      def request
-        Request.new
-      end
-      
-      def _prefixes
-      end
+  class TestController
+    def params
+      @params ||= {}
     end
-    class Request
-      def get?; true end
+
+    def params=(params)
+      @params = params
     end
-    @controller = TestController.new
-    ActionView::Base.send(:include, Sorted::ViewHelpers::ActionView)
+
+    def request
+      Request.new
+    end
+    
+    def _prefixes
+    end
   end
-  
-  it "should integrate with ActionView::Base" do
-    ActionView::Base.new.should respond_to(:sorted)
+  class Request
+    def get?; true end
   end
+
+  ActionView::Base.send(:include, Sorted::ViewHelpers::ActionView)
 
   it "should integrate with ActionView::Base" do
     ActionView::Base.new.should respond_to(:link_to_sorted)
   end
+end
 
+describe Sorted::ViewHelpers::ActionView::Sorted do
   it "should not change the direction of name using view helper" do
-    @controller.params = {:sort => "name_desc!email_asc"}
-    sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
-    sorter.toggle.to_a.should == [["email", "asc"], ["name", "desc"]]
+    order  = :email
+    params = { :page => 10 }
+    result = { :page => 10, :sort => "email_asc" }
+
+    sorter = Sorted::ViewHelpers::ActionView::Sorted.new order, params
+    sorter.params.should eq result
   end
 
   it "should reverse email direction using view helper" do
@@ -118,5 +79,17 @@ describe Sorted::ViewHelpers::ActionView do
   it "should not die if params nil" do
     sorter = ActionView::Base.new([], {}, @controller).sorted(:email)
     sorter.params.should == {:sort => "email_asc"}
+  end
+end
+
+describe Sorted::Parser, "to_css" do
+  it "should return css base class for to_css if not in sort params" do
+    sorter = Sorted::Sorter.new(:email)
+    sorter.to_css.should == "sorted"
+  end
+
+  it "should return css class for to_css" do
+    sorter = Sorted::Sorter.new(:email, {:sort => "email_desc"})
+    sorter.to_css.should == "sorted desc"
   end
 end
