@@ -4,7 +4,7 @@ module Sorted
   class Railtie < Rails::Railtie
     initializer "sorted.active_record" do |app|
       if defined? ::ActiveRecord
-        require 'sorted/finders/active_record'
+        require 'sorted/orms/active_record'
         Sorted::Orms::ActiveRecord.enable!
       end
     end

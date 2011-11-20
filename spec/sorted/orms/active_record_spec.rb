@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'active_record'
 
 describe Sorted::Orms::ActiveRecord do
   before(:each) do
