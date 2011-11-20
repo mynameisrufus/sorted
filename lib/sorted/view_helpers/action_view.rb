@@ -4,7 +4,7 @@ require 'sorted'
 module Sorted
   module ViewHelpers
     module ActionView
-      class Sorted
+      class SortedViewHelper
         attr_reader :params
 
         def initialize(order, params)
@@ -15,10 +15,7 @@ module Sorted
           @params[:sort] = @parser.to_s
         end
 
-        
-        
-
-        def to_css
+        def css
           if @parser.sorts.flatten.include? @parser.orders[0][0]
             "sorted #{@parser.sorts.assoc(@parser.orders[0][0]).last}"
           else
@@ -28,8 +25,8 @@ module Sorted
       end
 
       def link_to_sorted(name, order, options = {})
-        sorter          = Sorted.new(order, ((request.get? && !params.nil?) ? params.dup : nil))
-        options[:class] = [options[:class], sorter.to_css].join(' ').strip
+        sorter          = SortedViewHelper.new(order, ((request.get? && !params.nil?) ? params.dup : nil))
+        options[:class] = [options[:class], sorter.css].join(' ').strip
         link_to(name.to_s, sorter.params, options)
       end
     end

@@ -1,5 +1,4 @@
-require 'sorted/sorter'
-require 'sorted/toggler'
+require 'sorted/parser'
 
 module Sorted
 end

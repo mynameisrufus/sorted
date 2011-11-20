@@ -1,3 +1,5 @@
+require 'sorted/toggler'
+
 module Sorted
   # call from a model with a defaut order:
   #
@@ -8,7 +10,7 @@ module Sorted
 
     # Regex to make sure we only get valid names and not injected code.
     SORTED_QUERY_REGEX  = /([a-zA-Z0-9._]+)_(asc|desc)$/
-    SQL_REGEX           = /(([a-zA-Z._0-9]*)\s([asc|ASC|desc|DESC]+)|[a-zA-Z._0-9]*)/
+    SQL_REGEX           = /(([a-zA-Z0-9._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z0-9._]+)/
 
     def initialize(sort, order = nil)
       @sort   = sort
@@ -20,7 +22,7 @@ module Sorted
     def parse_sort
       sort.to_s.split(/!/).map do |sort_string|
         if m = sort_string.match(SORTED_QUERY_REGEX)
-          [m[1], m[2]]
+          [m[1], m[2].downcase]
         end
       end.compact
     end
@@ -28,7 +30,7 @@ module Sorted
     def parse_order
       order.to_s.split(/,/).map do |order_string|
         if m = order_string.match(SQL_REGEX)
-          [m[2], (m[3].nil? ? "asc" : m[3].downcase)]
+          [(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
         end
       end.compact
     end
