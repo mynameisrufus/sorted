@@ -4,7 +4,9 @@ Sorted is a simple object that will take an sql order string and a url
 sort string to let you sort large datasets over many pages (using
 {will_paginate}[http://github.com/mislav/will_paginatea] or
 {kaminari}[https://github.com/amatsuda/kaminari]) without loosing state.
-Examples use {kaminari}[https://github.com/amatsuda/kaminari].
+
+If you would like to see it in action clone the
+{example app}[https://github.com/mynameisrufus/sorted_app]
 
 === Gemfile
 
@@ -14,41 +16,39 @@ Examples use {kaminari}[https://github.com/amatsuda/kaminari].
 
   link_to_sorted "Email", :email
 
-This will make a url like this:
+This will generate a link with a url like this:
 
   http://myapp/users?sort=email_asc
 
-or on the next page load when you then sort by something else....
+and on the next page load when you then sort by something else....
 
   http://myapp/users?sort=name_asc!email_asc
 
 === Model
 
-This will initially sort by email ascending:
+This will initially sort by email ascending with the optional second
+default order argument:
 
   @users = User.sort(params[:sort], "email ASC").page(params[:page])
 
-Or you can just clone the example app https://github.com/mynameisrufus/sorted_app.
-
 ==== Joins and includes
 
-If you want to sort by a belongs to relationship, just provide sort
-order as "table.column ASC|DESC". For example assuming the User model
-belongs to a company:
+If you want to sort by a belongs to relationship add the table name to
+the order argument. For example assuming a user belongs to a company:
 
   @users = User.joins(:company).sort(params[:sort], "companies.name ASC").page(params[:page])
 
 When generating links using the +link_to_sorted+ method you should
-specify the table for every attribute you use otherwise you will
-probably get the ambiguous column name error.
+specify the table for every attribute you use as well otherwise you
+will probably get an ambiguous column name error.
 
-  <th class="ui-state-default"><%= link_to_sorted "Total", 'items.total' %></th>
-  <th class="ui-state-default"><%= link_to_sorted "User", 'users.name' %></th>
+  <th class="ui-state-default"><%= link_to_sorted "Company name", 'companies.name' %></th>
+  <th class="ui-state-default"><%= link_to_sorted "Users name", 'users.name' %></th>
 
 ==== Typecasting and DB functions
 
 Do your type casting and function calls in your select statement with an
-alias to use Sorted, for example:
+alias, for example:
 
   # controller
   @users = User.select("income::BigInt as bg_income").sort(params[:sort], "bg_income ASC")
@@ -56,7 +56,7 @@ alias to use Sorted, for example:
   # view
   <th class="ui-state-default"><%= link_to_sorted "Income", 'bg_income' %></th>
 
-or to call a DB function:
+or using a DB function:
 
   # controller
   @users = User.select("inet_aton(`ip_address`) AS in_ip").sort(params[:sort], "in_ip ASC")
@@ -90,7 +90,7 @@ an alternating class to you table rows using the rails +cycle+ method:
 
 == Rails 2.3.x
 
-This gem works with rails 2.3.x but you will have to roll your own scope
+Sorted works with rails 2.3.x but you will have to roll your own scope
 and view helper.
 
 Here is the named scope for your model(s):
@@ -99,7 +99,7 @@ Here is the named scope for your model(s):
     { :order =>  Sorted::Parser.new(sort, order).to_sql }
   }
 
-and the application helper methods:
+and the application helper method:
 
   def link_to_sorted(name, order, options = {})
     dup_params      = (request.get? && !params.nil?) ? params.dup : nil
