@@ -6,6 +6,6 @@ describe Sorted::Orms::ActiveRecord do
   end
 
   it "should integrate with ActiveRecord::Base" do
-    ActiveRecord::Base.should respond_to(:sorted)
+    ActiveRecord::Base.should respond_to(:sort)
   end
 end

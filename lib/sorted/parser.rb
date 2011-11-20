@@ -1,16 +1,17 @@
 require 'sorted/toggler'
 
 module Sorted
-  # call from a model with a defaut order:
+  # Takes a sort query string and an SQL order string and parses the
+  # values to produce key value pairs.
   #
-  #  Sorted::Parser.new(sort, order)
-  #  Sorted::Parser.new('name_asc!phone_desc', 'name ASC')
+  # Example:
+  #  Sorted::Parser.new('phone_desc', 'name ASC').to_s #-> "phone_desc!name_asc"
   class Parser
     attr_reader :sort, :order, :sorts, :orders
 
     # Regex to make sure we only get valid names and not injected code.
     SORTED_QUERY_REGEX  = /([a-zA-Z0-9._]+)_(asc|desc)$/
-    SQL_REGEX           = /(([a-zA-Z0-9._]+)\s([asc|ASC|desc|DESC]+)|[a-zA-Z0-9._]+)/
+    SQL_REGEX           = /(([a-z0-9._]+)\s([asc|desc]+)|[a-z0-9._]+)/i
 
     def initialize(sort, order = nil)
       @sort   = sort
@@ -51,22 +52,11 @@ module Sorted
       array
     end
     
-    # Toggle the the sort options.
-    #
-    # For example if the sort string is:
-    #
-    #   'name_asc'
-    #
-    # it will become:
-    #
-    #   'name_desc'
-    #
     def toggle
-      @array = Toggler.new(orders, sorts).to_a
+      @array = Toggler.new(sorts, orders).to_a
       self
     end
     
-    # Removes the toggle from the sort options
     def reset
       @array = default
       self

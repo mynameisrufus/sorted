@@ -6,8 +6,6 @@ sort string to let you sort large datasets over many pages (using
 {kaminari}[https://github.com/amatsuda/kaminari]) without loosing state.
 Examples use {kaminari}[https://github.com/amatsuda/kaminari].
 
-== Example
-
 === Gemfile
 
   gem 'sorted' '~> 0.3.9'
@@ -52,11 +50,19 @@ probably get the ambiguous column name error.
 Do your type casting and function calls in your select statement with an
 alias to use Sorted, for example:
 
+  # controller
   @users = User.select("income::BigInt as bg_income").sort(params[:sort], "bg_income ASC")
+  
+  # view
+  <th class="ui-state-default"><%= link_to_sorted "Income", 'bg_income' %></th>
 
 or to call a DB function:
 
+  # controller
   @users = User.select("inet_aton(`ip_address`) AS in_ip").sort(params[:sort], "in_ip ASC")
+
+  # view
+  <th class="ui-state-default"><%= link_to_sorted "IP address", 'in_ip' %></th>
 
 == Presentation
 

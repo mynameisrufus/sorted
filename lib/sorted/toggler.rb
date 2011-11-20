@@ -1,13 +1,13 @@
 module Sorted
-  # takes parsed data and transposes it
+  # Takes a parsed arrays of sorts and orders, it then will reorder the
+  # pairs and flip the assendance of the first sort pair.
   #
-  #   Sorted::Toggler.new(order, sort)
-  #   Sorted::Toggler.new(
-  #     [['name', 'asc'], ['phone', 'desc']],
-  #     [['name', 'desc']]
-  #   )
+  # Example:
+  #   sorts  = [['name', 'asc'], ['phone', 'desc']]
+  #   oredrs = [['name', 'asc']]
+  #   Sorted::Toggler.new(sorts, orders).to_a #-> [['name', 'desc'], ['phone', 'desc']]
   class Toggler
-    def initialize(orders, sorts)
+    def initialize(sorts, orders)
       @array = []
       @sorts      = sorts
       @orders     = orders

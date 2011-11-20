@@ -9,7 +9,6 @@ module Sorted
 
         def initialize(order, params)
           sort = params.delete :sort
-          @order = order
           @params = params
           @parser = ::Sorted::Parser.new(sort, order).toggle
           @params[:sort] = @parser.to_s
