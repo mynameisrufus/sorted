@@ -5,105 +5,18 @@ sort string to let you sort large datasets over many pages (using
 {will_paginate}[http://github.com/mislav/will_paginatea] or
 {kaminari}[https://github.com/amatsuda/kaminari]) without loosing state.
 
-If you would like to see it in action clone the
-{example app}[https://github.com/mynameisrufus/sorted_app]
-
 === Gemfile
 
-  gem 'sorted' '~> 0.3.9'
+  gem 'sorted', '~> 0.3.9'
 
 === View
 
+Generate a sorted link with the email attribute:
+
   link_to_sorted "Email", :email
-
-This will generate a link with a url like this:
-
-  http://myapp/users?sort=email_asc
-
-and on the next page load when you then sort by something else....
-
-  http://myapp/users?sort=name_asc!email_asc
 
 === Model
 
-This will initially sort by email ascending with the optional second
-default order argument:
+Using the +sort+ method with the optional default order argument:
 
   @users = User.sort(params[:sort], "email ASC").page(params[:page])
-
-==== Joins and includes
-
-If you want to sort by a belongs to relationship add the table name to
-the order argument. For example assuming a user belongs to a company:
-
-  @users = User.joins(:company).sort(params[:sort], "companies.name ASC").page(params[:page])
-
-When generating links using the +link_to_sorted+ method you should
-specify the table for every attribute you use as well otherwise you
-will probably get an ambiguous column name error.
-
-  <th class="ui-state-default"><%= link_to_sorted "Company name", 'companies.name' %></th>
-  <th class="ui-state-default"><%= link_to_sorted "Users name", 'users.name' %></th>
-
-==== Typecasting and DB functions
-
-Do your type casting and function calls in your select statement with an
-alias, for example:
-
-  # controller
-  @users = User.select("income::BigInt as bg_income").sort(params[:sort], "bg_income ASC")
-  
-  # view
-  <th class="ui-state-default"><%= link_to_sorted "Income", 'bg_income' %></th>
-
-or using a DB function:
-
-  # controller
-  @users = User.select("inet_aton(`ip_address`) AS in_ip").sort(params[:sort], "in_ip ASC")
-
-  # view
-  <th class="ui-state-default"><%= link_to_sorted "IP address", 'in_ip' %></th>
-
-== Presentation
-
-You might want to roll your own +link_to_sorted+ method to use jQuery ui
-css classes for example, all you need is the sorted object.
-
-  def link_to_sorted(name, order)
-    dup_params = (request.get? && !params.nil?) ? params.dup : nil
-    sorter     = ActionView::Base::SortedViewHelper.new(order, dup_params)
-    css_class  = case sorter.css
-                 when "sorted asc"
-                   "ui-icon ui-icon-triangle-1-n"
-                 when "sorted desc"
-                   "ui-icon ui-icon-triangle-1-s"
-                 when "sorted"
-                   "ui-icon ui-icon-carat-2-n-s"
-                 end
-    link_to(content_tag(:span, nil, {:class => css_class}) + name.to_s, sorter.params)
-  end
-
-Tables are best displayed with alternating shades for each row, so add
-an alternating class to you table rows using the rails +cycle+ method:
-
-  <tr class="<%= cycle 'odd', 'even' %>">
-
-== Rails 2.3.x
-
-Sorted works with rails 2.3.x but you will have to roll your own scope
-and view helper.
-
-Here is the named scope for your model(s):
-
-  named_scope :sort, lambda { |sort, order|
-    { :order =>  Sorted::Parser.new(sort, order).to_sql }
-  }
-
-and the application helper method:
-
-  def link_to_sorted(name, order, options = {})
-    dup_params      = (request.get? && !params.nil?) ? params.dup : nil
-    sorter          = Sorted::ViewHelpers::ActionView::SortedViewHelper.new(order, dup_params)
-    options[:class] = [options[:class], sorter.css].join(' ').strip
-    link_to(name.to_s, sorter.params, options)
-  end
