@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler", ">= 1.0.0"
   s.add_development_dependency "rails", ">= 3.1.2"
   s.add_development_dependency "rspec", ">= 2.0.0"
+  s.add_development_dependency "sqlite3", ">= 1.3.5"
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact

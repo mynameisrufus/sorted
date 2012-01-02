@@ -2,16 +2,18 @@ require 'sorted'
 
 module Sorted
   class Railtie < Rails::Railtie
-    initializer "sorted.active_record" do |app|
-      if defined? ::ActiveRecord
+    if defined? ::ActiveRecord
+      initializer "sorted.active_record" do |app|
         require 'sorted/orms/active_record'
-        Sorted::Orms::ActiveRecord.enable!
+        ::ActiveRecord::Base.send(:include, Sorted::Orms::ActiveRecord)
       end
     end
     
-    initializer "sorted.action_view" do |app|
-      require 'sorted/view_helpers/action_view'
-      ::ActionView::Base.send(:include, Sorted::ViewHelpers::ActionView)
+    if defined? ::ActiveRecord
+      initializer "sorted.action_view" do |app|
+        require 'sorted/view_helpers/action_view'
+        ::ActionView::Base.send(:include, Sorted::ViewHelpers::ActionView)
+      end
     end
   end
 end

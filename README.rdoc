@@ -7,7 +7,7 @@ sort string to let you sort large datasets over many pages (using
 
 === Gemfile
 
-  gem 'sorted', '~> 0.3.9'
+  gem 'sorted', '~> 0.4.0'
 
 === View
 
@@ -19,4 +19,4 @@ Generate a sorted link with the email attribute:
 
 Using the +sort+ method with the optional default order argument:
 
-  @users = User.sort(params[:sort], "email ASC").page(params[:page])
+  @users = User.sorted(params[:sort], "email ASC").page(params[:page])

@@ -4,12 +4,10 @@ require 'sorted'
 module Sorted
   module Orms
     module ActiveRecord
-      def self.enable!
-        ::ActiveRecord::Base.class_eval do
-          def self.sort(sort, order = nil)
-            sorter = ::Sorted::Parser.new(sort, order)
-            order sorter.to_sql
-          end
+      def self.included(base)
+        def base.sorted(sort, default_order = nil)
+          sorter = ::Sorted::Parser.new(sort, default_order)
+          order sorter.to_sql
         end
       end
     end
