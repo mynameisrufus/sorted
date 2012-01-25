@@ -7,7 +7,7 @@ sort string to let you sort large datasets over many pages (using
 
 === Gemfile
 
-  gem 'sorted', '~> 0.4.0'
+  gem 'sorted', '~> 0.4.1'
 
 === View
 
