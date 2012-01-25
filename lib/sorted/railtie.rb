@@ -9,7 +9,7 @@ module Sorted
       end
     end
     
-    if defined? ::ActiveRecord
+    if defined? ::ActionView
       initializer "sorted.action_view" do |app|
         require 'sorted/view_helpers/action_view'
         ::ActionView::Base.send(:include, Sorted::ViewHelpers::ActionView)

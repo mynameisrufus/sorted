@@ -3,7 +3,7 @@ require File.expand_path("../lib/sorted/version", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "sorted"
-  s.version     = Example::VERSION
+  s.version     = Sorted::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Rufus Post"]
   s.email       = ["rufuspost@gmail.com"]

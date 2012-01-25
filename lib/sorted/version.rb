@@ -1,3 +1,3 @@
-module Example
-  VERSION = "0.4.0"
+module Sorted
+  VERSION = "0.4.1"
 end

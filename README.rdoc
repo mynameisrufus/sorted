@@ -17,6 +17,6 @@ Generate a sorted link with the email attribute:
 
 === Model
 
-Using the +sort+ method with the optional default order argument:
+Using the +sorted+ method with the optional default order argument:
 
   @users = User.sorted(params[:sort], "email ASC").page(params[:page])
