@@ -24,7 +24,7 @@ module Sorted
       end
 
       def link_to_sorted(name, order, options = {})
-        sorter          = SortedViewHelper.new(order, ((request.get? && !params.nil?) ? params.dup : nil))
+        sorter          = SortedViewHelper.new(order, ((request.get? && !params.nil?) ? params.dup : {}))
         options[:class] = [options[:class], sorter.css].join(' ').strip
         link_to(name.to_s, sorter.params, options)
       end
