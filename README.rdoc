@@ -5,7 +5,7 @@ sort string to let you sort large datasets over many pages (using
 {will_paginate}[http://github.com/mislav/will_paginatea] or
 {kaminari}[https://github.com/amatsuda/kaminari]) without loosing state.
 
-[![Build Status](https://secure.travis-ci.org/mynameisrufus/sorted.png)](http://travis-ci.org/mynameisrufus/sorted)
+{<img src="https://secure.travis-ci.org/mynameisrufus/sorted.png" />}[http://travis-ci.org/mynameisrufus/sorted]
 
 === Gemfile
 
