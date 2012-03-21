@@ -34,4 +34,12 @@ describe Sorted::ViewHelpers::ActionView::SortedViewHelper do
     sorter = Sorted::ViewHelpers::ActionView::SortedViewHelper.new order, params
     sorter.css.should eq result
   end
+
+  it "should return the default order when params are empty" do
+    order  = :email
+    result = { :sort => "email_asc" }
+
+    sorter = Sorted::ViewHelpers::ActionView::SortedViewHelper.new order, {}
+    sorter.params.should eq result
+  end
 end
