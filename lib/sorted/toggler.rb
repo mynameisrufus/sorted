@@ -4,7 +4,7 @@ module Sorted
   #
   # Example:
   #   sorts  = [['name', 'asc'], ['phone', 'desc']]
-  #   oredrs = [['name', 'asc']]
+  #   orders = [['name', 'asc']]
   #   Sorted::Toggler.new(sorts, orders).to_a #-> [['name', 'desc'], ['phone', 'desc']]
   class Toggler
     def initialize(sorts, orders)
