@@ -9,13 +9,16 @@ sort string to let you sort large datasets over many pages (using
 
 === Gemfile
 
-  gem 'sorted', '~> 0.4.2'
+  gem 'sorted', '~> 0.4.3'
 
 === View
 
 Generate a sorted link with the email attribute:
 
   link_to_sorted "Email", :email
+
+Works the same as the +link_to+ method except a second argument for the
+sort attribute is needed.
 
 === Model
 
