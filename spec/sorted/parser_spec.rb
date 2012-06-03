@@ -87,4 +87,13 @@ describe Sorted::Parser, "return types" do
     sorter = Sorted::Parser.new(sort, order)
     sorter.to_s.should eq result
   end
+
+  it "sql injection using order by clause should not work" do
+    sort   = "(case+when+((ASCII(SUBSTR((select+table_name+from+all_tables+where+rownum%3d1),1))>%3D128))+then+id+else+something+end)"
+    order  = "email ASC, phone ASC, name DESC"
+    result = "email ASC, phone ASC, name DESC"
+
+    sorter = Sorted::Parser.new(sort, order)
+    sorter.to_sql.should eq result
+  end
 end
