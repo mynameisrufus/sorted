@@ -56,6 +56,31 @@ module Sorted
         options[:class] = [options[:class], sorter.css].join(' ').strip
         link_to(sorter.params, options, html_options, &block)
       end
+
+      # Convenience method for quickly spitting out a sorting menu.
+      #
+      # ==== Examples
+      #
+      # Basic usage
+      #
+      #   sort_by :first_name, :last_name
+      #
+      # To provide a string to use instead of a column name, pass an array composed
+      # of your label string and the column name (symbol):
+      #
+      #   sortable_by :author_name, :title, ["Date of Publication", :published_at]
+      #
+      def sortable_by(*columns)
+        links = content_tag :span, "Sort by: "
+        columns.each do |c|
+          if c.is_a? Array
+            links += link_to_sorted(c[0],c[1].to_sym)
+          else
+            links += link_to_sorted(c.to_s.titleize, c.to_sym)
+          end
+        end
+        content_tag :div, links, :class => 'sortable'
+      end
     end
   end
 end
