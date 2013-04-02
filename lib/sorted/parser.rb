@@ -41,7 +41,10 @@ module Sorted
     end
 
     def to_sql
-      array.map{|a| "`#{a[0]}` #{a[1].upcase}" }.join(', ')
+      array.map do |a|
+        column = a[0].split('.').map{ |fragment| "`#{fragment}`" }.join('.')
+        "#{column} #{a[1].upcase}"
+      end.join(', ')
     end
 
     def to_s

@@ -61,6 +61,15 @@ describe Sorted::Parser, "params parsing" do
 end
 
 describe Sorted::Parser, "return types" do
+
+  it "should properly escape sql column names" do
+    order = "users.name DESC"
+    result = "`users`.`name` DESC"
+
+    sorter = Sorted::Parser.new(nil, order)
+    sorter.to_sql.should eq result
+  end
+
   it "should return an sql sort string" do
     sort   = "email_desc!name_desc"
     order  = "email ASC, phone ASC, name DESC"
