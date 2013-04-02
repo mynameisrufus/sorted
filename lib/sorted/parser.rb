@@ -35,13 +35,13 @@ module Sorted
         end
       end.compact
     end
-   
+
     def to_hash
       array.inject({}){|h,a| h.merge(Hash[a[0],a[1]])}
     end
-    
+
     def to_sql
-      array.map{|a| "#{a[0]} #{a[1].upcase}" }.join(', ')
+      array.map{|a| "`#{a[0]}` #{a[1].upcase}" }.join(', ')
     end
 
     def to_s
@@ -51,12 +51,12 @@ module Sorted
     def to_a
       array
     end
-    
+
     def toggle
       @array = Toggler.new(sorts, orders).to_a
       self
     end
-    
+
     def reset
       @array = default
       self
