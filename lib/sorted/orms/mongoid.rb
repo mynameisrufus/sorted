@@ -1,16 +1,17 @@
-# encoding: UTF-8
+require 'mongoid'
+require 'sorted'
+require 'active_support/concern'
+
 module Sorted
   module Orms
     module Mongoid
-      extend ::ActiveSupport::Concern
+      extend ActiveSupport::Concern
+      SQL_TO_MONGO = { "asc" => 1, "desc" => -1 } 
 
       included do
-      end
-
-      module ClassMethods
-        def sorted(sort, default_order = nil)
+        def self.sorted(sort, default_order = nil)
           sorter = ::Sorted::Parser.new(sort, default_order)
-          order_by sorter.to_sql
+          order_by sorter.to_hash.merge(sorter) { |key, val| SQL_TO_MONGO[val] }
         end
       end
     end

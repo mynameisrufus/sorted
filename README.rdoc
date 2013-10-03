@@ -7,9 +7,9 @@ sort string to let you sort large datasets over many pages (using
 
 {<img src="https://secure.travis-ci.org/mynameisrufus/sorted.png" />}[http://travis-ci.org/mynameisrufus/sorted]
 
-=== Gemfile
+== Compatibility
 
-  gem 'sorted', '~> 0.4.3'
+  MRI 1.9.3, 2.0.0.
 
 === View
 
@@ -19,6 +19,10 @@ Generate a sorted link with the email attribute:
 
 Works the same as the +link_to+ method except a second argument for the
 sort attribute is needed.
+
+=== Ruby 1.8.7 Rails 3.x
+
+  gem 'sorted', '~> 0.4.3'
 
 === Model
 

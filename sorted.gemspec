@@ -5,11 +5,12 @@ Gem::Specification.new do |s|
   s.name        = "sorted"
   s.version     = Sorted::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Rufus Post"]
-  s.email       = ["rufuspost@gmail.com"]
+  s.authors     = ["Rufus Post", "Daniel Leavitt"]
+  s.email       = ["rufuspost@gmail.com", "daniel.leavitt@gmail.com"]
   s.homepage    = "http://rubygems.org/gems/sorted"
-  s.summary     = "sort data with a database"
-  s.description = "lets you sort large data sets using view helpers and a scope"
+  s.summary     = %q{Data sorting library}
+  s.description = %q{Allows you to sort large datasets over many pages, without losing state.}
+  s.license     = "MIT"
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "sorted"
@@ -18,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails", "= 4.0.0"
   s.add_development_dependency "rspec", ">= 2.0.0"
   s.add_development_dependency "sqlite3", ">= 1.3.5"
+  s.add_development_dependency "mongoid", ">= 3.0"
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact

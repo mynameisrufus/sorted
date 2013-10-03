@@ -1,3 +1,3 @@
 module Sorted
-  VERSION = "0.4.3"
+  VERSION = "1.0.0"
 end
