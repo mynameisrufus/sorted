@@ -61,10 +61,19 @@ describe Sorted::Parser, "params parsing" do
 end
 
 describe Sorted::Parser, "return types" do
+
+  it "should properly escape sql column names" do
+    order = "users.name DESC"
+    result = "`users`.`name` DESC"
+
+    sorter = Sorted::Parser.new(nil, order)
+    sorter.to_sql.should eq result
+  end
+
   it "should return an sql sort string" do
     sort   = "email_desc!name_desc"
     order  = "email ASC, phone ASC, name DESC"
-    result = "email DESC, name DESC, phone ASC"
+    result = "`email` DESC, `name` DESC, `phone` ASC"
 
     sorter = Sorted::Parser.new(sort, order)
     sorter.to_sql.should eq result
@@ -91,7 +100,7 @@ describe Sorted::Parser, "return types" do
   it "sql injection using order by clause should not work" do
     sort   = "(case+when+((ASCII(SUBSTR((select+table_name+from+all_tables+where+rownum%3d1),1))>%3D128))+then+id+else+something+end)"
     order  = "email ASC, phone ASC, name DESC"
-    result = "email ASC, phone ASC, name DESC"
+    result = "`email` ASC, `phone` ASC, `name` DESC"
 
     sorter = Sorted::Parser.new(sort, order)
     sorter.to_sql.should eq result
