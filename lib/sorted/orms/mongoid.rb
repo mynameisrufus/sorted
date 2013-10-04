@@ -6,7 +6,7 @@ module Sorted
   module Orms
     module Mongoid
       extend ActiveSupport::Concern
-      SQL_TO_MONGO = { "asc" => 1, "desc" => -1 } 
+      SQL_TO_MONGO = { "asc" => 1, "desc" => -1 }
 
       included do
         def self.sorted(sort, default_order = nil)

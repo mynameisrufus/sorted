@@ -79,7 +79,7 @@ module Sorted
             links += link_to_sorted(c.to_s.titleize, c.to_sym)
           end
         end
-        content_tag :div, links, :class => 'sortable'
+        content_tag :div, links, class: 'sortable'
       end
     end
   end

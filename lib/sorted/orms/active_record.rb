@@ -1,5 +1,6 @@
 require 'active_record'
 require 'sorted'
+require 'active_support/concern'
 
 module Sorted
   module Orms

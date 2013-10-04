@@ -4,9 +4,9 @@ describe Sorted::Orms::ActiveRecord do
   ActiveRecord::Base.send(:include, Sorted::Orms::ActiveRecord)
 
   class SortedActiveRecordTest < ActiveRecord::Base
-    establish_connection :adapter => 'sqlite3', :database => ':memory:'
+    establish_connection adapter: 'sqlite3', database: ':memory:'
 
-    connection.create_table table_name, :force => true do |t|
+    connection.create_table table_name, force: true do |t|
       t.string :name
     end
 
