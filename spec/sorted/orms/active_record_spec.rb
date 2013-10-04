@@ -10,9 +10,7 @@ describe Sorted::Orms::ActiveRecord do
       t.string :name
     end
 
-    scope :page, lambda {
-      limit(50)
-    }
+    scope :page, -> { limit(50) }
   end
 
   it "should integrate with ActiveRecord::Base" do
