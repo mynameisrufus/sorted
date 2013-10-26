@@ -18,7 +18,7 @@ describe Sorted::Orms::ActiveRecord do
   end
 
   it "should play nice with other scopes" do
-    sql = "SELECT  \"sorted_active_record_tests\".* FROM \"sorted_active_record_tests\"  WHERE \"sorted_active_record_tests\".\"name\" = 'bob'  ORDER BY `name` ASC LIMIT 50"
+    sql = "SELECT  \"sorted_active_record_tests\".* FROM \"sorted_active_record_tests\"  WHERE \"sorted_active_record_tests\".\"name\" = 'bob'  ORDER BY \"name\" ASC LIMIT 50"
     SortedActiveRecordTest.where(:name => 'bob').page.sorted(nil, 'name ASC').to_sql.should == sql
     SortedActiveRecordTest.page.sorted(nil, 'name ASC').where(:name => 'bob').to_sql.should == sql
   end

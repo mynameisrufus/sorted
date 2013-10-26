@@ -61,13 +61,18 @@ describe Sorted::Parser, "params parsing" do
 end
 
 describe Sorted::Parser, "return types" do
+  module FakeConnection
+    def self.quote_column_name(column_name)
+      "`#{column_name}`"
+    end
+  end
 
   it "should properly escape sql column names" do
     order = "users.name DESC"
     result = "`users`.`name` DESC"
 
     sorter = Sorted::Parser.new(nil, order)
-    sorter.to_sql.should eq result
+    sorter.to_sql(FakeConnection).should eq result
   end
 
   it "should return an sql sort string" do
@@ -76,7 +81,7 @@ describe Sorted::Parser, "return types" do
     result = "`email` DESC, `name` DESC, `phone` ASC"
 
     sorter = Sorted::Parser.new(sort, order)
-    sorter.to_sql.should eq result
+    sorter.to_sql(FakeConnection).should eq result
   end
 
   it "should return an hash" do
@@ -103,6 +108,6 @@ describe Sorted::Parser, "return types" do
     result = "`email` ASC, `phone` ASC, `name` DESC"
 
     sorter = Sorted::Parser.new(sort, order)
-    sorter.to_sql.should eq result
+    sorter.to_sql(FakeConnection).should eq result
   end
 end
