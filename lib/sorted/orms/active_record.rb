@@ -10,7 +10,8 @@ module Sorted
       included do
         def self.sorted(sort, default_order = nil)
           sorter = ::Sorted::Parser.new(sort, default_order)
-          order sorter.to_sql(self.connection)
+          quoter = ->(frag) { connection.quote_column_name(frag) }
+          order sorter.to_sql(quoter)
         end
       end
     end

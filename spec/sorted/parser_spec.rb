@@ -67,12 +67,16 @@ describe Sorted::Parser, "return types" do
     end
   end
 
+  let(:quoter) {
+    ->(frag) { FakeConnection.quote_column_name(frag) }
+  }
+
   it "should properly escape sql column names" do
     order = "users.name DESC"
     result = "`users`.`name` DESC"
 
     sorter = Sorted::Parser.new(nil, order)
-    sorter.to_sql(FakeConnection).should eq result
+    sorter.to_sql(quoter).should eq result
   end
 
   it "should return an sql sort string" do
@@ -81,7 +85,7 @@ describe Sorted::Parser, "return types" do
     result = "`email` DESC, `name` DESC, `phone` ASC"
 
     sorter = Sorted::Parser.new(sort, order)
-    sorter.to_sql(FakeConnection).should eq result
+    sorter.to_sql(quoter).should eq result
   end
 
   it "should return an hash" do
@@ -108,6 +112,6 @@ describe Sorted::Parser, "return types" do
     result = "`email` ASC, `phone` ASC, `name` DESC"
 
     sorter = Sorted::Parser.new(sort, order)
-    sorter.to_sql(FakeConnection).should eq result
+    sorter.to_sql(quoter).should eq result
   end
 end
