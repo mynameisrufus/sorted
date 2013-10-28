@@ -54,7 +54,7 @@ module Sorted
 
         sorter          = SortedViewHelper.new(order, ((request.get? && !params.nil?) ? params.dup : {}))
         options[:class] = [options[:class], sorter.css].join(' ').strip
-        link_to(sorter.params, options, html_options, &block)
+        link_to(url_for(sorter.params), options, html_options, &block)
       end
 
       # Convenience method for quickly spitting out a sorting menu.
