@@ -1,4 +1,3 @@
-require 'active_record'
 require 'sorted'
 require 'active_support/concern'
 

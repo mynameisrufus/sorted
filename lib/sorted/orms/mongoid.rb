@@ -1,4 +1,3 @@
-require 'mongoid'
 require 'sorted'
 require 'active_support/concern'
 

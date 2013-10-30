@@ -5,7 +5,7 @@
 Sorted is a simple object that will take an sql order string and a url
 sort string to let you sort large datasets over many pages (using 
 [will_paginate](https://github.com/mislav/will_paginate) or 
-[kaminari](https://github.com/amatsuda/kaminari) without losing state.
+[kaminari](https://github.com/amatsuda/kaminari)) without losing state.
 
 ### View
 

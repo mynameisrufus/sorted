@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'railties', '>= 4'
+gem 'mongoid', '~> 4', github: 'mongoid/mongoid', :require => 'mongoid'
+gem 'rspec-rails', '>= 2.0'
+gem 'origin'
+gem 'moped'
+gem 'nokogiri'
+gem 'xpath'
+gem 'mime-types'
+
+gemspec :path => '../'
