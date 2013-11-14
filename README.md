@@ -32,9 +32,10 @@ Using the `sorted` method with the optional default order argument:
 @users = User.sorted(params[:sort], "email ASC").page(params[:page])
 ```
 
-### Compatibility
+### Rubies
 
-MRI 1.9.3, 2.0.0.
+* MRI 1.9.3, 2.0.0.
+* JRuby 1.9 mode
 
 ### ORMs
 

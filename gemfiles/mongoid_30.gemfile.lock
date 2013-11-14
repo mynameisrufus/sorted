@@ -32,7 +32,9 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     atomic (1.1.14)
+    atomic (1.1.14-java)
     bson (2.0.0.rc3)
+    bson (2.0.0.rc3-java)
     builder (3.1.4)
     diff-lcs (1.2.4)
     erubis (2.7.0)
@@ -45,6 +47,8 @@ GEM
       optionable (~> 0.1.1)
     multi_json (1.8.2)
     nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
+    nokogiri (1.6.0-java)
       mini_portile (~> 0.5.0)
     optionable (0.1.1)
     origin (1.1.0)
@@ -72,15 +76,17 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    sqlite3 (1.3.8)
     thor (0.18.1)
     thread_safe (0.1.3)
+      atomic
+    thread_safe (0.1.3-java)
       atomic
     tzinfo (0.3.38)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
@@ -97,5 +103,4 @@ DEPENDENCIES
   rspec (>= 2.0.0)
   rspec-rails (>= 2.0)
   sorted!
-  sqlite3 (>= 1.3.5)
   xpath
