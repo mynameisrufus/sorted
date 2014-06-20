@@ -8,9 +8,25 @@ module Sorted
 
       included do
         def self.sorted(sort, default_order = nil)
-          sorter = ::Sorted::Parser.new(sort, default_order)
-          quoter = ->(frag) { connection.quote_column_name(frag) }
-          order sorter.to_sql(quoter)
+          order sort_sql(sort, default_order)
+        end
+
+        def self.sorted!(sort, default_order = nil)
+          reorder sort_sql(sort, default_order)
+        end
+
+        private
+
+        def self.sort_sql(sort, default_order)
+          sorter(sort, default_order).to_sql(quoter)
+        end
+
+        def self.sorter(sort, default_order)
+          ::Sorted::Parser.new(sort, default_order)
+        end
+
+        def self.quoter
+          ->(frag) { connection.quote_column_name(frag) }
         end
       end
     end
