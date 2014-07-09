@@ -21,7 +21,7 @@ module Sorted
     def to_a
       @array
     end
-    
+
     def toggle_sorts
       if @order_keys == @sort_keys.take(@order_keys.size)
         @order_keys.select do |order|
