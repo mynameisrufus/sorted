@@ -16,7 +16,7 @@ if defined? ActiveRecord
 
     it "should integrate with ActiveRecord::Base" do
       SortedActiveRecordTest.should respond_to(:sorted)
-      SortedActiveRecordTest.should respond_to(:sorted!)
+      SortedActiveRecordTest.should respond_to(:resorted)
     end
 
     it "should play nice with other scopes" do
@@ -27,7 +27,7 @@ if defined? ActiveRecord
 
     it "should override the provided order" do
       sql = "SELECT  \"sorted_active_record_tests\".* FROM \"sorted_active_record_tests\"  WHERE \"sorted_active_record_tests\".\"name\" = 'bob'  ORDER BY \"name\" ASC LIMIT 50"
-      SortedActiveRecordTest.page.where(:name => 'bob').order(:id).sorted!(nil, 'name ASC').to_sql.should == sql
+      SortedActiveRecordTest.page.where(:name => 'bob').order(:id).sorted(nil, 'name DESC').resorted(nil, 'name ASC').to_sql.should == sql
     end
   end
 end

@@ -11,7 +11,7 @@ module Sorted
           order sort_sql(sort, default_order)
         end
 
-        def self.sorted!(sort, default_order = nil)
+        def self.resorted(sort, default_order = nil)
           reorder sort_sql(sort, default_order)
         end
 
