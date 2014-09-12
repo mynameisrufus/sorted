@@ -32,6 +32,13 @@ Using the `sorted` method with the optional default order argument:
 @users = User.sorted(params[:sort], "email ASC").page(params[:page])
 ```
 
+A `resorted` method is also available and works the same way as the `reorder` method in Rails.
+It forces the order to be the one passed in:
+
+```ruby
+@users = User.order(:id).sorted(nil, 'name DESC').resorted(params[:sort], 'email ASC')
+```
+
 ### Rubies
 
 * MRI 1.9.3, 2.0.0.
