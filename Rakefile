@@ -38,6 +38,7 @@ task :benchmark do
 
   n = 50000
   Benchmark.bm do |x|
+    x.report(:lazy) { for i in 1..n; Sorted::Parser.new(sort, order); end }
     x.report(:to_hash) { for i in 1..n; Sorted::Parser.new(sort, order).to_hash; end }
     x.report(:to_sql) { for i in 1..n; Sorted::Parser.new(sort, order).to_sql; end }
     x.report(:to_a) { for i in 1..n; Sorted::Parser.new(sort, order).to_a; end }
