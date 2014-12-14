@@ -1,15 +1,15 @@
 require 'bundler'
-Bundler::GemHelper.install_tasks
-
+require 'rubocop/rake_task'
 require 'rspec/core'
 require 'rspec/core/rake_task'
+require 'rdoc/task'
+
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-task :default => "spec:all"
+RuboCop::RakeTask.new
 
-require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   require 'sorted/version'
 
@@ -20,7 +20,7 @@ Rake::RDocTask.new do |rdoc|
 end
 
 namespace :spec do
-  desc "Run Tests against all ORMs"
+  desc 'Run Tests against all ORMs'
   task :all do
     %w(active_record_40 mongoid_30).each do |gemfile|
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
@@ -33,10 +33,10 @@ task :benchmark do
   require 'benchmark'
   require 'sorted/parser'
 
-  sort   = "email_desc!name_desc"
-  order  = "email ASC, phone ASC, name DESC"
+  sort   = 'email_desc!name_desc'
+  order  = 'email ASC, phone ASC, name DESC'
 
-  n = 50000
+  n = 50_000
   Benchmark.bm do |x|
     x.report(:lazy) { for i in 1..n; Sorted::Parser.new(sort, order); end }
     x.report(:to_hash) { for i in 1..n; Sorted::Parser.new(sort, order).to_hash; end }
@@ -45,3 +45,5 @@ task :benchmark do
     x.report(:toggle) { for i in 1..n; Sorted::Parser.new(sort, order).toggle; end }
   end
 end
+
+task default: ['rubocop', 'spec:all']
