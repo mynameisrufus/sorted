@@ -6,34 +6,54 @@ module Sorted
   #
   # Example:
   #  Sorted::Parser.new('phone_desc', 'name ASC').to_s #-> "phone_desc!name_asc"
-  class Parser
-    attr_reader :sort, :order, :sorts, :orders
+  #
+  module Parse
+    attr_reader :raw
 
-    # Regex to make sure we only get valid names and not injected code.
-    SORTED_QUERY_REGEX  = /([a-zA-Z0-9._]+)_(asc|desc)$/
-    SQL_REGEX           = /(([a-z0-9._]+)\s([asc|desc]+)|[a-z0-9._]+)/i
+    def initialize(raw)
+      @raw = raw
+    end
+
+    def split(delim, &block)
+      return [] if raw.nil?
+      raw.to_s.split(delim).inject([], &block)
+    end
+  end
+
+  class SortParser
+    include Parse
+
+    REGEXP = /([a-zA-Z0-9._]+)_(asc|desc)$/
+
+    def value
+      split(/!/) do |set, part|
+        m = part.match(REGEXP)
+        return set unless m
+        set << [m[1], m[2].downcase]
+      end
+    end
+  end
+
+  class OrderParser
+    include Parse
+
+    REGEXP = /(([a-z0-9._]+)\s([asc|desc]+)|[a-z0-9._]+)/i
+
+    def value
+      split(/,/) do |set, part|
+        m = part.match(REGEXP)
+        return set unless m
+        set << [(m[2].nil? ? m[1] : m[2]), (m[3].nil? ? "asc" : m[3].downcase)]
+      end
+    end
+  end
+
+  class Parser
+    attr_reader :sorts, :orders
 
     def initialize(sort, order = nil)
-      @sort   = sort
-      @order  = order
-      @sorts  = parse_sort
-      @orders = parse_order
-    end
-
-    def parse_sort
-      sort.to_s.split(/!/).map do |sort_string|
-        if m = sort_string.match(SORTED_QUERY_REGEX)
-          [m[1], m[2].downcase]
-        end
-      end.compact
-    end
-
-    def parse_order
-      order.to_s.split(/,/).map do |order_string|
-        if m = order_string.match(SQL_REGEX)
-          [(m[2].nil? ? m[1] : m[2]),(m[3].nil? ? "asc" : m[3].downcase)]
-        end
-      end.compact
+      @sorts  = SortParser.new(sort).value
+      @orders = OrderParser.new(order).value
     end
 
     def to_hash
