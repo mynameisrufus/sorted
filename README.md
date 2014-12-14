@@ -1,6 +1,7 @@
 # sorted
 
-[![Build Status](https://travis-ci.org/mynameisrufus/sorted.png?branch=master)](https://travis-ci.org/mynameisrufus/sorted)
+[![Build Status](https://travis-ci.org/mynameisrufus/sorted.svg?branch=master)](https://travis-ci.org/mynameisrufus/sorted)
+[![Gem Version](https://badge.fury.io/rb/sorted.svg)](http://badge.fury.io/rb/sorted)
 
 Sorted is a simple object that will take an sql order string and a url
 sort string to let you sort large datasets over many pages (using 
