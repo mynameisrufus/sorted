@@ -28,3 +28,19 @@ namespace :spec do
     end
   end
 end
+
+task :benchmark do
+  require 'benchmark'
+  require 'sorted/parser'
+
+  sort   = "email_desc!name_desc"
+  order  = "email ASC, phone ASC, name DESC"
+
+  n = 50000
+  Benchmark.bm do |x|
+    x.report(:to_hash) { for i in 1..n; Sorted::Parser.new(sort, order).to_hash; end }
+    x.report(:to_sql) { for i in 1..n; Sorted::Parser.new(sort, order).to_sql; end }
+    x.report(:to_a) { for i in 1..n; Sorted::Parser.new(sort, order).to_a; end }
+    x.report(:toggle) { for i in 1..n; Sorted::Parser.new(sort, order).toggle; end }
+  end
+end
