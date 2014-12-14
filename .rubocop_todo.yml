@@ -35,11 +35,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 9
 
-# Offense count: 2
-# Configuration parameters: IndentWhenRelativeTo, SupportedStyles, IndentOneStep.
-Style/CaseIndentation:
-  Enabled: false
-
 # Offense count: 14
 Style/Documentation:
   Enabled: false
@@ -52,18 +47,4 @@ Style/For:
 # Offense count: 1
 # Configuration parameters: MaxLineLength.
 Style/IfUnlessModifier:
-  Enabled: false
-
-# Offense count: 5
-Style/MultilineBlockChain:
-  Enabled: false
-
-# Offense count: 1
-# Configuration parameters: Methods.
-Style/SingleLineBlockParams:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/WhenThen:
   Enabled: false

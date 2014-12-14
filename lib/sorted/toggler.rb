@@ -1,62 +1,66 @@
 module Sorted
-  # Takes a parsed arrays of sorts and orders, it then will reorder the
-  # pairs and flip the assendance of the first sort pair.
+  Set = Struct.new(:set) do
+    def each(&block)
+      set.each(&block)
+    end
+
+    def direction_intersect(other)
+      memo = []
+      each.with_index do |a, i|
+        b = other.at(i)
+        next unless b
+        memo << (b.first == a.first ? [a.first, flip_direction(a.last)] : a)
+      end
+      self.class.new(memo)
+    end
+
+    def -(other)
+      memo = []
+      each do |a|
+        b = other.assoc(a.first)
+        next if b
+        memo << a
+      end
+      self.class.new(memo)
+    end
+
+    def +(other)
+      self.class.new(set + other.set)
+    end
+
+    def flip_direction(direction)
+      case direction
+      when 'asc' then 'desc'
+      when 'desc'then  'asc'
+      end
+    end
+
+    def assoc(obj)
+      set.assoc(obj)
+    end
+
+    def at(i)
+      set.at(i)
+    end
+  end
+
+  ##
+  # Takes a parsed arrays of sorts and orders, it then will reorder the pairs
+  # and flip the assendance of the first sort pair.
   #
   # Example:
   #   sorts  = [['name', 'asc'], ['phone', 'desc']]
   #   orders = [['name', 'asc']]
-  #   Sorted::Toggler.new(sorts, orders).to_a #-> [['name', 'desc'], ['phone', 'desc']]
+  #   Sorted::Toggler.new(sorts, orders).to_a
+
   class Toggler
     def initialize(sorts, orders)
-      @array = []
-      @sorts      = sorts
-      @orders     = orders
-      @sort_keys  = sorts.transpose.first
-      @order_keys = orders.transpose.first
-      toggle_sorts unless @sort_keys.nil?
-      add_remaining_orders
-      add_remaining_sorts
+      @sorts = Set.new(sorts)
+      @orders = Set.new(orders)
     end
 
     def to_a
-      @array
-    end
-
-    def toggle_sorts
-      if @order_keys == @sort_keys.take(@order_keys.size)
-        @order_keys.select do |order|
-          @sort_keys.include?(order)
-        end.each do |order|
-          @array << [order, (case @sorts.assoc(order).last; when 'asc'; 'desc'; when 'desc'; 'asc' end)]
-        end
-      else
-        @order_keys.select do |order|
-          @sort_keys.include?(order)
-        end.each do |order|
-          @array << [order, @sorts.assoc(order).last]
-        end
-      end
-      @sort_keys.select do |sort|
-        @order_keys.include?(sort) && !@array.flatten.include?(sort)
-      end.each do |sort|
-        @array << [sort, @sorts.assoc(sort).last]
-      end
-    end
-
-    def add_remaining_orders
-      @orders.select do |order|
-        !@array.flatten.include?(order[0])
-      end.each do |order|
-        @array << order
-      end
-    end
-
-    def add_remaining_sorts
-      @sorts.select do |sort|
-        !@array.flatten.include?(sort[0])
-      end.each do |sort|
-        @array << sort
-      end
+      (@sorts.direction_intersect(@orders) + (@sorts - @orders) + (@orders - @sorts)).set
     end
   end
 end

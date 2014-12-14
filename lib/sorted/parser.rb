@@ -74,7 +74,7 @@ module Sorted
     end
 
     def to_hash
-      set.inject({}) { |h, a| h.merge(Hash[a[0], a[1]]) }
+      set.inject({}) { |a, e| a.merge(Hash[e[0], e[1]]) }
     end
 
     def to_sql(quote_proc = ->(frag) { frag })
