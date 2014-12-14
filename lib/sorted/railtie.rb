@@ -2,7 +2,7 @@ require 'sorted'
 
 module Sorted
   class Railtie < Rails::Railtie
-    initializer "sorted.configure" do |app|
+    initializer 'sorted.configure' do |_app|
       if defined? ::ActiveRecord
         ActiveSupport.on_load :active_record do
           require 'sorted/orms/active_record'

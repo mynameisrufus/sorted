@@ -18,7 +18,7 @@ module Sorted
           if @parser.sorts.flatten.include? @parser.orders[0][0]
             "sorted #{@parser.sorts.assoc(@parser.orders[0][0]).last}"
           else
-            "sorted"
+            'sorted'
           end
         end
       end
@@ -71,10 +71,10 @@ module Sorted
       #   sortable_by :author_name, :title, ["Date of Publication", :published_at]
       #
       def sortable_by(*columns)
-        links = content_tag :span, "Sort by: "
+        links = content_tag :span, 'Sort by: '
         columns.each do |c|
           if c.is_a? Array
-            links += link_to_sorted(c[0],c[1].to_sym)
+            links += link_to_sorted(c[0], c[1].to_sym)
           else
             links += link_to_sorted(c.to_s.titleize, c.to_sym)
           end

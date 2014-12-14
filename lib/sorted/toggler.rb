@@ -27,7 +27,7 @@ module Sorted
         @order_keys.select do |order|
           @sort_keys.include?(order)
         end.each do |order|
-          @array << [order, (case @sorts.assoc(order).last; when "asc"; "desc"; when "desc"; "asc" end)]
+          @array << [order, (case @sorts.assoc(order).last; when 'asc'; 'desc'; when 'desc'; 'asc' end)]
         end
       else
         @order_keys.select do |order|

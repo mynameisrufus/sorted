@@ -39,7 +39,7 @@ module Sorted
       split(/,/) do |set, part|
         m = part.match(REGEXP)
         return set unless m
-        set << [(m[2].nil? ? m[1] : m[2]), (m[3].nil? ? "asc" : m[3].downcase)]
+        set << [(m[2].nil? ? m[1] : m[2]), (m[3].nil? ? 'asc' : m[3].downcase)]
       end
     end
   end
@@ -50,7 +50,7 @@ module Sorted
     end
 
     def column(parts)
-      parts.split('.').map{ |frag| quote_proc.call(frag) }.join('.')
+      parts.split('.').map { |frag| quote_proc.call(frag) }.join('.')
     end
 
     private :column
