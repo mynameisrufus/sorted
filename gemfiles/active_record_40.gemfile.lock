@@ -1,7 +1,7 @@
 PATH
   remote: /Users/rufuspost/Projects/ruby/gems/sorted
   specs:
-    sorted (1.0.1)
+    sorted (1.1.0)
 
 GEM
   remote: https://rubygems.org/

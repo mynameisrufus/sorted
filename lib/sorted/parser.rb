@@ -7,19 +7,30 @@ module Sorted
   # values to produce key value pairs.
   #
   # Example:
-  #  Sorted::Parser.new('phone_desc', 'name ASC').to_s #-> "phone_desc!name_asc"
+  #  Sorted::Parser.new('phone_desc', 'name ASC').to_s #=> "phone_desc!name_asc"
+  #
+  #  TODO A more helpfull name than `Parser` because it only deals with URI and
+  #  SQL. Shoud be refactored before 2.x
 
   Parser = Struct.new(:sort, :order) do
+    def uri
+      URIQuery.parse(sort)
+    end
+
+    def sql
+      SQLQuery.parse(order)
+    end
+
     def sorts
-      URIQuery.parse(sort).to_a
+      uri.to_a
     end
 
     def orders
-      SQLQuery.parse(order).to_a
+      sql.to_a
     end
 
     def to_hash
-      Set.new(set).to_hash
+      set.to_hash
     end
 
     def to_sql(quote_proc = ->(f) { f })
@@ -31,30 +42,27 @@ module Sorted
     end
 
     def to_a
-      set
+      set.to_a
     end
 
     def toggle
-      @set = Toggler.new(sorts, orders).to_a
+      @set = Toggler.new(sorts, orders).toggle
       self
     end
 
     def reset
-      @set = default(sorts)
+      @set = default
       self
     end
 
     private
 
     def set
-      @set ||= default(sorts)
+      @set ||= default
     end
 
-    def default(sort_set)
-      orders.each do |o|
-        sort_set << o unless sort_set.flatten.include?(o[0])
-      end
-      sort_set
+    def default
+      uri + (sql - uri)
     end
   end
 end

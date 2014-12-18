@@ -1,12 +1,14 @@
 module Sorted
   ##
   # Takes a parsed arrays of sorts and orders, it then will reorder the pairs
-  # and flip the assendance of the first sort pair.
+  # and flip the ascendance of the first sort pair.
   #
   # Example:
   #   sorts  = [['name', 'asc'], ['phone', 'desc']]
   #   orders = [['name', 'asc']]
   #   Sorted::Toggler.new(sorts, orders).to_a
+  #
+  #  TODO Remove this in 2.x, it's only here for backwards compatibility.
 
   class Toggler
     def initialize(sorts, orders)
@@ -14,8 +16,12 @@ module Sorted
       @orders = Set.new(orders)
     end
 
+    def toggle
+      @sorts.direction_intersect(@orders) + (@sorts - @orders) + (@orders - @sorts)
+    end
+
     def to_a
-      (@sorts.direction_intersect(@orders) + (@sorts - @orders) + (@orders - @sorts)).to_a
+      toggle.to_a
     end
   end
 end

@@ -2,6 +2,8 @@ require 'sorted/parser'
 
 module Sorted
   class Set
+    include Enumerable
+
     def initialize(set = [])
       @set = set
     end
