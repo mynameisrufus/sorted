@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    sorted (1.1.0)
+    sorted (1.1.1)
 
 GEM
   remote: https://rubygems.org/

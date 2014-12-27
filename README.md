@@ -16,7 +16,7 @@ b = Sorted::Set.new([['email', 'asc'], ['phone', 'asc']])
 
 s = a.direction_intersect(b) + (a - b) + (b - a)
 
-s.to_a #=> [['email', 'desc'], ['phone', 'asc'], ['name', 'asc']]
+s.uniq.to_a #=> [['email', 'desc'], ['phone', 'asc'], ['name', 'asc']]
 ```
 
 The best way to think about this is to imagine a spreed sheet and what happens

@@ -17,7 +17,7 @@ module Sorted
     end
 
     def toggle
-      @sorts.direction_intersect(@orders) + (@sorts - @orders) + (@orders - @sorts)
+      (@sorts.direction_intersect(@orders) + (@sorts - @orders) + (@orders - @sorts)).uniq
     end
 
     def to_a

@@ -42,4 +42,13 @@ describe Sorted::ViewHelpers::ActionView::SortedViewHelper do
     sorter = Sorted::ViewHelpers::ActionView::SortedViewHelper.new order, {}
     sorter.params.should eq result
   end
+
+  it 'should correctly order' do
+    order  = :email
+    params = { sort: 'name_asc' }
+    result = { sort: 'email_asc!name_asc' }
+
+    sorter = Sorted::ViewHelpers::ActionView::SortedViewHelper.new order, params
+    sorter.params.should eq result
+  end
 end

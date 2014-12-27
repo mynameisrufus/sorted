@@ -40,6 +40,10 @@ module Sorted
       self.class.new(@set << a)
     end
 
+    def uniq
+      self.class.new(@set.uniq)
+    end
+
     def assoc(o)
       @set.assoc(o)
     end
@@ -114,5 +118,6 @@ module Sorted
 end
 
 if defined?(::Rails::Railtie)
+  ActiveSupport::Deprecation.warn('Rails helpers will be removed in version 2.0 of the sorted gem, use sorted-rails instead.')
   require 'sorted/railtie'
 end
