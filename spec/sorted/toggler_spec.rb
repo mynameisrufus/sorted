@@ -54,4 +54,22 @@ describe Sorted::Toggler do
     toggler = Sorted::Toggler.new(sorts, orders)
     toggler.to_a.should eq result
   end
+
+  it 'should toggle based on sorts and not orders' do
+    orders = [['email', 'desc'], ['phone', 'desc']]
+    sorts  = [['email', 'asc'], ['phone', 'asc']]
+    result = [['email', 'desc'], ['phone', 'desc']]
+
+    toggler = Sorted::Toggler.new(sorts, orders)
+    toggler.to_a.should eq result
+  end
+
+  it 'should toggle based on sorts and not orders' do
+    orders = [['email', 'asc']]
+    sorts  = [['name', 'asc']]
+    result = [['email', 'asc'], ['name', 'asc']]
+
+    toggler = Sorted::Toggler.new(sorts, orders)
+    toggler.to_a.should eq result
+  end
 end

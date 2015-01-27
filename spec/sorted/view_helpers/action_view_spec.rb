@@ -43,7 +43,16 @@ describe Sorted::ViewHelpers::ActionView::SortedViewHelper do
     sorter.params.should eq result
   end
 
-  it 'should correctly order' do
+  it 'should correctly toggle multiple params' do
+    order  = 'email DESC, name DESC'
+    params = { sort: 'email_asc!name_asc' }
+    result = { sort: 'email_desc!name_desc' }
+
+    sorter = Sorted::ViewHelpers::ActionView::SortedViewHelper.new order, params
+    sorter.params.should eq result
+  end
+
+  it 'should have sort order over existing params' do
     order  = :email
     params = { sort: 'name_asc' }
     result = { sort: 'email_asc!name_asc' }

@@ -46,7 +46,7 @@ module Sorted
     end
 
     def toggle
-      @set = Toggler.new(orders, sorts).toggle
+      @set = Toggler.new(sorts, orders).toggle
       self
     end
 

@@ -12,24 +12,44 @@ module Sorted
       @set.each(&block)
     end
 
+    ##
+    # Gets the keys from the array pairs
+    #
+    #   set = [["email", "name"], ["desc", "desc"]]
+    #   set.transpose #=> [["email", "name"], ["desc", "desc"]]
+    #   set.transpose.first #=> ["email", "name"]
+
+    def keys
+      @set.transpose.first || []
+    end
+
+    ##
+    # Returns a resulting set with specific keys flipped
+    #
+    #   a = Sorted::Set.new([['email', 'asc'], ['name', 'asc']])
+    #   b = Sorted::Set.new([['email', 'asc'], ['phone', 'asc']])
+    #   s = a.direction_intersect(b)
+    #   s.to_a #=> [['email', 'desc'], ['phone', 'asc'], ['name', 'asc']]
+
     def direction_intersect(other)
-      memo = []
-      each.with_index do |a, i|
-        b = other.at(i)
-        next unless b
-        memo << (b.first == a.first ? [a.first, flip_direction(a.last)] : a)
+      self.class.new.tap do |memo|
+        unless other.keys.empty?
+          a(memo, other)
+          b(memo, other)
+        end
+        c(memo)
+        d(memo, other)
       end
-      self.class.new(memo)
     end
 
     def -(other)
-      memo = []
-      each do |a|
-        b = other.assoc(a.first)
-        next if b
-        memo << a
+      self.class.new.tap do |memo|
+        each do |a|
+          b = other.assoc(a.first)
+          next if b
+          memo << a
+        end
       end
-      self.class.new(memo)
     end
 
     def +(other)
@@ -58,6 +78,52 @@ module Sorted
 
     def to_hash
       @set.inject({}) { |a, e| a.merge(Hash[e[0], e[1]]) }
+    end
+
+    private
+
+    # If the order of keys match upto the size of the set then flip them
+    def a(memo, other)
+      if keys == other.keys.take(keys.size)
+        keys.each do |order|
+          if other.keys.include?(order)
+            memo << [order, flip_direction(other.assoc(order).last)]
+          end
+        end
+      else
+        keys.each do |order|
+          if other.keys.include?(order)
+            memo << other.assoc(order)
+          end
+        end
+      end
+    end
+
+    # Add items from other that are common and not already added
+    def b(memo, other)
+      other.keys.each do |sort|
+        if keys.include?(sort) && !memo.keys.include?(sort)
+          memo << other.assoc(sort)
+        end
+      end
+    end
+
+    # Add items not in memo
+    def c(memo)
+      each do |order|
+        unless memo.keys.include?(order[0])
+          memo << order
+        end
+      end
+    end
+
+    # Add items from other not in memo
+    def d(memo, other)
+      other.each do |sort|
+        unless memo.keys.include?(sort[0])
+          memo << sort
+        end
+      end
     end
 
     def flip_direction(direction)

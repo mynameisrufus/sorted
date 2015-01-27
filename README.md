@@ -14,7 +14,7 @@ The secret sauce is the `Sorted::Set` object, in this example we 'toggle' email:
 a = Sorted::Set.new([['email', 'asc'], ['name', 'asc']])
 b = Sorted::Set.new([['email', 'asc'], ['phone', 'asc']])
 
-s = a.direction_intersect(b) + (a - b) + (b - a)
+s = a.direction_intersect(b)
 
 s.uniq.to_a #=> [['email', 'desc'], ['phone', 'asc'], ['name', 'asc']]
 ```
