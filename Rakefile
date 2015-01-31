@@ -19,30 +19,24 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-namespace :spec do
-  desc 'Run Tests against all ORMs'
-  task :all do
-    %w(active_record_40 mongoid_30).each do |gemfile|
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t spec"
-    end
-  end
-end
-
 task :benchmark do
   require 'benchmark'
 
-  sort   = 'email_desc!name_desc'
-  order  = 'email ASC, phone ASC, name DESC'
+  uri = 'email_desc!name_desc'
+  sql = 'email ASC, phone ASC, name DESC'
+
+  uri_set = Sorted::SQLQuery.parse(uri)
+  sql_set = Sorted::SQLQuery.parse(sql)
 
   n = 50_000
   Benchmark.bm do |x|
-    x.report(:lazy) { for i in 1..n; Sorted::Parser.new(sort, order); end }
-    x.report(:to_hash) { for i in 1..n; Sorted::Parser.new(sort, order).to_hash; end }
-    x.report(:to_sql) { for i in 1..n; Sorted::Parser.new(sort, order).to_sql; end }
-    x.report(:to_a) { for i in 1..n; Sorted::Parser.new(sort, order).to_a; end }
-    x.report(:toggle) { for i in 1..n; Sorted::Parser.new(sort, order).toggle; end }
+    # Query
+    x.report(:uri_parse) { for i in 1..n; Sorted::URIQuery.parse(uri); end }
+    x.report(:sql_parse) { for i in 1..n; Sorted::SQLQuery.parse(sql); end }
+
+    # Set
+    x.report(:direction_intersect) { for i in 1..n; sql_set.direction_intersect(uri_set); end }
   end
 end
 
-task default: ['rubocop', 'spec:all']
+task default: ['rubocop', 'spec']

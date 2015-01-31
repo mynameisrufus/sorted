@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ['rufuspost@gmail.com', 'daniel.leavitt@gmail.com']
   s.homepage    = 'http://rubygems.org/gems/sorted'
   s.summary     = 'Data sorting library'
-  s.description = 'Allows you to sort large datasets over many pages, without losing state.'
+  s.description = 'Data sorting library, used by other libs to construct queries and more'
   s.license     = 'MIT'
 
   s.required_rubygems_version = '>= 1.3.6'
@@ -18,8 +18,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '>= 0'
   s.add_development_dependency 'bundler', '>= 1.0.0'
   s.add_development_dependency 'rspec', '>= 2.0.0'
-  s.add_development_dependency 'activesupport', '>= 3.0.0'
-  s.add_development_dependency 'actionpack', '>= 3.0.0'
   s.add_development_dependency 'rubocop', '>= 0.28'
 
   s.files        = `git ls-files`.split("\n")

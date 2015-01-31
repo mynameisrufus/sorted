@@ -1,8 +1,7 @@
-require 'sorted/parser'
-
 module Sorted
   class Set
     include Enumerable
+    include Comparable
 
     def initialize(set = [])
       @set = set
@@ -58,6 +57,10 @@ module Sorted
 
     def <<(a)
       self.class.new(@set << a)
+    end
+
+    def <=>(other)
+      @set <=> other.to_a
     end
 
     def uniq
@@ -181,9 +184,4 @@ module Sorted
     end
     private_class_method :column
   end
-end
-
-if defined?(::Rails::Railtie)
-  ActiveSupport::Deprecation.warn('Rails helpers will be removed in version 2.0 of the sorted gem, use sorted-rails instead.')
-  require 'sorted/railtie'
 end
