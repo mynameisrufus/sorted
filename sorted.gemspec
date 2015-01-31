@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.name        = 'sorted'
   s.version     = Sorted::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ['Rufus Post', 'Daniel Leavitt']
-  s.email       = ['rufuspost@gmail.com', 'daniel.leavitt@gmail.com']
+  s.authors     = ['Rufus Post']
+  s.email       = ['rufuspost@gmail.com']
   s.homepage    = 'http://rubygems.org/gems/sorted'
   s.summary     = 'Data sorting library'
   s.description = 'Data sorting library, used by other libs to construct queries and more'

@@ -39,8 +39,5 @@ Currently implemented:
 ## Projects
 
 * Mongoid https://github.com/dleavitt/sorted-mongoid
-
-TODO:
-
-* ActiveRecord
-* ActionView
+* ActiveRecord https://github.com/mynameisrufus/sorted-activerecord
+* ActionView https://github.com/mynameisrufus/sorted-actionview
