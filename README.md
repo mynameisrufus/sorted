@@ -1,7 +1,6 @@
 # sorted
 
 [![Build Status](https://travis-ci.org/mynameisrufus/sorted.svg?branch=master)](https://travis-ci.org/mynameisrufus/sorted)
-[![Gem Version](https://badge.fury.io/rb/sorted.svg)](http://badge.fury.io/rb/sorted)
 
 Sorted at it's core is a set of objects that let you sort many different
 attributes in weird and wonderful ways.
@@ -35,9 +34,6 @@ Currently implemented:
 
 * `Sorted::SQLQuery`
 * `Sorted::URIQuery`
-
-TODO:
-
 * `Sorted::JSONQuery`
 
 ## Projects
