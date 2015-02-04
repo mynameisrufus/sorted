@@ -142,18 +142,22 @@ module Sorted
       return Set.new if raw.nil?
       raw.to_s.split(delim).inject(Set.new, &block)
     end
+
+    def parse_match(m)
+      [(m[2].nil? ? m[1] : m[2]), (m[3].nil? ? 'asc' : m[3].downcase)]
+    end
   end
 
   class URIQuery
     extend Parse
 
-    REGEXP = /([a-zA-Z0-9._]+)_(asc|desc)$/
+    REGEXP = /(([a-z0-9._]+)_([asc|desc]+)|[a-z0-9._]+)/i
 
     def self.parse(raw)
       split(raw, /!/) do |set, part|
         m = part.match(REGEXP)
-        return set unless m
-        set << [m[1], m[2].downcase]
+        next unless m
+        set << parse_match(m)
       end
     end
 
@@ -170,8 +174,8 @@ module Sorted
     def self.parse(raw)
       split(raw, /,/) do |set, part|
         m = part.match(REGEXP)
-        return set unless m
-        set << [(m[2].nil? ? m[1] : m[2]), (m[3].nil? ? 'asc' : m[3].downcase)]
+        next unless m
+        set << parse_match(m)
       end
     end
 
@@ -197,6 +201,40 @@ module Sorted
 
     def self.encode(set)
       set.inject({}) { |a, e| a.merge(Hash[e[0], SORTED_TO_JSON[e[1]]]) }
+    end
+  end
+
+  ##
+  # Parses an array of decoded query params
+  #
+  # This parser/encoder uses an already decoded array of sort strings parsed by
+  # a URI library.
+  #
+  # Parsing:
+  #
+  #   params = ['phone_desc', 'name_asc']
+  #   set = Sorted::ParamsQuery.parse(params)
+  #   set.to_a #=> [['phone', 'desc'], ['name', asc']]
+  #
+  # Encoding:
+  #
+  #   Sorted::ParamsQuery.encode(set) #=> ['phone_desc', 'name_asc']
+
+  class ParamsQuery
+    extend Parse
+
+    REGEXP = /(([a-z0-9._]+)_([asc|desc]+)|[a-z0-9._]+)/i
+
+    def self.parse(params)
+      params.inject(Set.new) do |set, part|
+        m = part.match(REGEXP)
+        next unless m
+        set << parse_match(m)
+      end
+    end
+
+    def self.encode(set)
+      set.map { |a| a.join('_') }
     end
   end
 end
