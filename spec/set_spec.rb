@@ -71,4 +71,16 @@ describe Sorted::Set do
 
     expect(set.to_hash).to eq(result)
   end
+
+  it 'should return set when selecting items' do
+    set = Sorted::Set.new([['email', 'asc']])
+
+    expect(set.select { true }.class).to eq(Sorted::Set)
+  end
+
+  it 'should return set when rejecting items' do
+    set = Sorted::Set.new([['email', 'asc']])
+
+    expect(set.reject { true }.class).to eq(Sorted::Set)
+  end
 end

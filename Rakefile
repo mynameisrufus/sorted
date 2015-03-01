@@ -31,11 +31,11 @@ task :benchmark do
   n = 50_000
   Benchmark.bm do |x|
     # Query
-    x.report(:uri_parse) { for i in 1..n; Sorted::URIQuery.parse(uri); end }
-    x.report(:sql_parse) { for i in 1..n; Sorted::SQLQuery.parse(sql); end }
+    x.report(:uri_parse) { for _ in 1..n; Sorted::URIQuery.parse(uri); end }
+    x.report(:sql_parse) { for _ in 1..n; Sorted::SQLQuery.parse(sql); end }
 
     # Set
-    x.report(:direction_intersect) { for i in 1..n; sql_set.direction_intersect(uri_set); end }
+    x.report(:direction_intersect) { for _ in 1..n; sql_set.direction_intersect(uri_set); end }
   end
 end
 

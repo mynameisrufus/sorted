@@ -55,8 +55,16 @@ module Sorted
       self.class.new(@set + other.to_a)
     end
 
-    def <<(a)
-      self.class.new(@set << a)
+    def <<(other)
+      self.class.new(@set << other.to_a)
+    end
+
+    def select(&block)
+      self.class.new(@set.select(&block))
+    end
+
+    def reject(&block)
+      self.class.new(@set.reject(&block))
     end
 
     def <=>(other)
