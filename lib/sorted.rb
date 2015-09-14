@@ -212,6 +212,18 @@ module Sorted
     end
   end
 
+  class ElasticsearchQuery
+    extend Parse
+
+    def self.parse(raw)
+      Set.new(raw.each_with_object([]) {|(key, val), a| a << [key, val['order']] })
+    end
+
+    def self.encode(set)
+      set.to_a.each_with_object({}) { |f, h| h[f.first] = {'order' => f.last}}
+    end
+  end
+
   ##
   # Parses an array of decoded query params
   #
