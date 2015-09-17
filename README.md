@@ -35,6 +35,7 @@ Currently implemented:
 * `Sorted::SQLQuery`
 * `Sorted::URIQuery`
 * `Sorted::JSONQuery`
+* `Sorted::ElasticsearchQuery`
 * `Sorted::ParamsQuery`
 
 ## Projects
