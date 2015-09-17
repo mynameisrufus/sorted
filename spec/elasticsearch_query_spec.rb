@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Sorted::ElasticsearchQuery, 'decode' do
-  it 'should return a nice array from the order sql' do
-    json = [{ 'email' => {'order' => 'desc'}}, {'phone' => {'order' => 'asc'}}, {'name' => {'order' => 'desc'} }]
+  it 'should decode elasticsearch order hash to into set' do
+    json = [{ 'email' => { 'order' => 'desc' } }, { 'phone' => { 'order' => 'asc' } }, { 'name' => { 'order' => 'desc' } }]
     set = Sorted::ElasticsearchQuery.parse(json)
     result = Sorted::Set.new([['email', 'desc'], ['phone', 'asc'], ['name', 'desc']])
 
@@ -11,9 +11,9 @@ describe Sorted::ElasticsearchQuery, 'decode' do
 end
 
 describe Sorted::ElasticsearchQuery, 'encode' do
-  it 'should return an sql sort string' do
+  it 'should encode set into elasticsearch order hash' do
     set = Sorted::Set.new([['email', 'desc'], ['phone', 'asc'], ['name', 'desc']])
-    result = [{ 'email' => {'order' => 'desc'}}, {'phone' => {'order' => 'asc'}}, {'name' => {'order' => 'desc'} }]
+    result = [{ 'email' => { 'order' => 'desc' } }, { 'phone' => { 'order' => 'asc' } }, { 'name' => { 'order' => 'desc' } }]
 
     expect(Sorted::ElasticsearchQuery.encode(set)).to eq(result)
   end
