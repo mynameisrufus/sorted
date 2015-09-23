@@ -20,5 +20,6 @@ pkg
 .rvmrc
 Gemfile.lock
 .bundle
+doc/*
 
 ## PROJECT::SPECIFIC

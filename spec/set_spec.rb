@@ -69,7 +69,7 @@ describe Sorted::Set do
     set = Sorted::Set.new([['email', 'asc']])
     result = { 'email' => 'asc' }
 
-    expect(set.to_hash).to eq(result)
+    expect(set.to_h).to eq(result)
   end
 
   it 'should return set when selecting items' do
@@ -82,5 +82,13 @@ describe Sorted::Set do
     set = Sorted::Set.new([['email', 'asc']])
 
     expect(set.reject { true }.class).to eq(Sorted::Set)
+  end
+
+  it 'should append value to set' do
+    set = Sorted::Set.new([['email', 'asc']])
+    set << ['name', 'asc'] << ['phone', 'asc']
+
+    expect(set.length).to eq(3)
+    expect(set.size).to eq(3)
   end
 end

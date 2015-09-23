@@ -1,7 +1,4 @@
 inherit_from: .rubocop_todo.yml
 
-Style/Blocks:
-  Enabled: false
-
 Style/WordArray:
   MinSize: 2

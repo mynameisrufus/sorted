@@ -41,9 +41,7 @@ describe Sorted::SQLQuery, 'encode' do
     end
   end
 
-  let(:quoter) {
-    ->(frag) { FakeConnection.quote_column_name(frag) }
-  }
+  let(:quoter) { ->(frag) { FakeConnection.quote_column_name(frag) } }
 
   it 'should properly escape sql column names' do
     set = Sorted::Set.new([['users.name', 'desc']])
