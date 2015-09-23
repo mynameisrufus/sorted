@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'sorted/json_query'
+
 describe Sorted::JSONQuery, 'decode' do
   it 'should return a nice array from the order sql' do
     json = { 'email' => 1, 'phone' => 1, 'name' => -1 }

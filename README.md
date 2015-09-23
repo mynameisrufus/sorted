@@ -10,6 +10,8 @@ attributes in weird and wonderful ways.
 The secret sauce is the `Sorted::Set` object, in this example we 'toggle' email:
 
 ```ruby
+require 'sorted/set'
+
 a = Sorted::Set.new([['email', 'asc'], ['name', 'asc']])
 b = Sorted::Set.new([['email', 'asc'], ['phone', 'asc']])
 
@@ -26,6 +28,8 @@ when you sort by various columns, `Sorted::Set` pretty much just does that.
 Parsers return a `Sorted::Set` that can then be used by an encoder:
 
 ```ruby
+require 'sorted/uri_query'
+
 set = Sorted::URIQuery.parse('name_asc!email_asc')
 Sorted::SQLQuery.encode(set) #=> 'name ASC email ASC'
 ```

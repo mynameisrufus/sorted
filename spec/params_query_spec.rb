@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'sorted/params_query'
+
 describe Sorted::ParamsQuery, 'decode' do
   it 'should return a set from an array of params' do
     params = %w(email_asc phone_asc name_desc)

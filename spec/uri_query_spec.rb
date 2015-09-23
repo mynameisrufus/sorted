@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'sorted/uri_query'
+
 describe Sorted::URIQuery, 'decode' do
   it 'should allow numbers, underscores and full stops in sort params' do
     uri = 'assessmentsTable.name_desc!users_300.name_5_desc'

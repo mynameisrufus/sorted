@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'sorted/sql_query'
+
 describe Sorted::SQLQuery, 'decode' do
   it 'should return a nice array from the order sql' do
     sql = 'email ASC, phone ASC, name DESC'

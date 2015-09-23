@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'sorted/set'
+
 describe Sorted::Set do
   it 'should bring phone to first order importance but not toggle ascendance' do
     orders = Sorted::Set.new([['email', 'asc'], ['phone', 'asc']])

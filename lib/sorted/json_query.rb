@@ -1,3 +1,5 @@
+require 'sorted/set'
+
 module Sorted
   class JSONQuery
     JSON_TO_SORTED = { 1 => 'asc', -1 => 'desc' }

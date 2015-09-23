@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+require 'sorted/elasticsearch_query'
+
 describe Sorted::ElasticsearchQuery, 'decode' do
   it 'should decode elasticsearch order hash to into set' do
     json = [{ 'email' => { 'order' => 'desc' } }, { 'phone' => { 'order' => 'asc' } }, { 'name' => { 'order' => 'desc' } }]

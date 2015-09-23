@@ -1,3 +1,5 @@
+require 'sorted/set'
+
 module Sorted
   module Parse
     def split(raw, delim, &block)

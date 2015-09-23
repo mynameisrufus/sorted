@@ -1,3 +1,5 @@
+require 'sorted/set'
+
 module Sorted
   ##
   # Parses an Elasticsearch type set of order

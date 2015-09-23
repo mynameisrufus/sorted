@@ -1,3 +1,5 @@
+require 'sorted/set'
+
 module Sorted
   class SQLQuery
     extend Parse
