@@ -21,6 +21,8 @@ end
 
 task :benchmark do
   require 'benchmark'
+  require 'sorted/sql_query'
+  require 'sorted/uri_query'
 
   uri = 'email_desc!name_desc'
   sql = 'email ASC, phone ASC, name DESC'

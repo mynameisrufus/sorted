@@ -1,4 +1,5 @@
 require 'sorted/set'
+require 'sorted/parse'
 
 module Sorted
   class SQLQuery
