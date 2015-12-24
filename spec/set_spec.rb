@@ -93,4 +93,10 @@ describe Sorted::Set do
     expect(set.length).to eq(3)
     expect(set.size).to eq(3)
   end
+
+  it 'should return a unique set' do
+    set = Sorted::Set.new([['email', 'asc'], ['email', 'asc']])
+
+    expect(set.uniq.to_a).to eq([['email', 'asc']])
+  end
 end

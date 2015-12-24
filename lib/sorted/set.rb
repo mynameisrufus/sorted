@@ -132,7 +132,7 @@ module Sorted
     # If a block is given, it will use the return value of the block for comparison.
 
     def uniq
-      self.class.new(@ary.uniq) unless block_given?
+      return self.class.new(@ary.uniq) unless block_given?
       self.class.new(@ary.uniq { |item| yield item })
     end
 
@@ -231,7 +231,7 @@ module Sorted
     def flip_direction(direction)
       case direction
       when 'asc' then 'desc'
-      when 'desc'then  'asc'
+      when 'desc' then 'asc'
       end
     end
   end

@@ -21,6 +21,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop', '>= 0.28'
 
   s.files        = `git ls-files`.split("\n")
-  s.executables  = `git ls-files`.split("\n").map { |f| f =~ /^bin\/(.*)/ ? Regexp.last_match[1] : nil }.compact
+  s.executables  = `git ls-files`.split("\n").map { |f| f =~ %r{/^bin\/(.*)/} ? Regexp.last_match[1] : nil }.compact
   s.require_path = 'lib'
 end
